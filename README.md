@@ -58,7 +58,8 @@ Los iconos de la derecha están un poco más separados que en la referencia (12 
 
 Comportamiento:
 
-- La lupa abre el campo de búsqueda debajo de la barra y le da el foco; otro clic lo cierra. `Escape` también lo cierra y devuelve el foco a la lupa.
+- La lupa muestra el campo de búsqueda en el espacio del medio de la barra (sin desplegar nada hacia abajo) y le da el foco; otro clic lo oculta. `Escape` también lo oculta y devuelve el foco a la lupa.
+- En pantallas de menos de 768 px no hay lugar en el medio: mientras la búsqueda está abierta, el campo ocupa el lugar de la marca.
 - Al enviar, el header emite `buscar` con el término sin espacios; vacío no emite.
 - El carrito emite `abrirCarrito` y muestra `cantidadCarrito` (input, por defecto 0). El usuario emite `abrirCuenta`.
 - Todavía no hay páginas de búsqueda, carrito ni cuenta: el layout no escucha esas salidas. Al crear esas features, conectarlas en `MainLayoutComponent`.

@@ -45,7 +45,7 @@ This is the Red Automotriz web app (Angular + Angular Material + SSR). It follow
 - `src/app/layouts/main-layout/`: header menu + `<main>` with the page `router-outlet`.
 - `src/app/shared/`: reusable components, models, services, pipes and directives. Export them from `src/app/shared/index.ts`.
 - `src/app/features/<feature>/`: one folder per business feature, with `<feature>.routes.ts` (`<FEATURE>_ROUTES`) and `pages/`. Register it in `app.routes.ts` with `loadChildren`, as a child of `MainLayoutComponent`.
-- The header menu lives in `src/app/shared/components/header/`. Its layout (brand on the left; search, cart and user icons on the right; search opens below the bar) is documented in `README.md`; keep it.
+- The header menu lives in `src/app/shared/components/header/`. Its layout (brand on the left; search, cart and user icons on the right; search opens inline in the middle of the bar, never below it) is documented in `README.md`; keep it.
 
 ## Styles and Angular Material
 
