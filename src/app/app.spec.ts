@@ -23,7 +23,10 @@ describe('App', () => {
     expect(document.querySelector('app-header .header__marca')?.textContent?.trim()).toBe(
       'Red Automotriz.',
     );
-    expect(elemento.querySelector('h1')?.textContent).toBe('Red Automotriz');
+    expect(elemento.querySelector('h1')?.textContent).toBe(
+      'Diagramas eléctricos automotrices por marca',
+    );
+    expect(elemento.querySelectorAll('app-marca-card').length).toBeGreaterThan(0);
     expect(document.querySelector('app-footer footer')).not.toBeNull();
   });
 });

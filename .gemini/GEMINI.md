@@ -39,7 +39,7 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 
 ## Project Structure
 
-This is the Red Automotriz web app (Angular + Angular Material + SSR). It follows the same architecture as `ultron-gestion-activos-frontend`:
+This is the Red Automotriz web app (Angular + Angular Material + SSR). It sells automotive electrical diagrams (ECU, dashboards, immobilizers, airbag, pinouts) organized by vehicle brand; it does NOT sell parts or services, so keep copy and links about diagrams. It follows the same architecture as `ultron-gestion-activos-frontend`:
 
 - `src/app/core/`: app-wide singleton services (auth, interceptors, guards).
 - `src/app/layouts/main-layout/`: header menu + `<main>` with the page `router-outlet`.
@@ -47,6 +47,7 @@ This is the Red Automotriz web app (Angular + Angular Material + SSR). It follow
 - `src/app/features/<feature>/`: one folder per business feature, with `<feature>.routes.ts` (`<FEATURE>_ROUTES`) and `pages/`. Register it in `app.routes.ts` with `loadChildren`, as a child of `MainLayoutComponent`.
 - The header menu lives in `src/app/shared/components/header/`. Its layout (brand on the left; search, cart and user icons on the right; search opens inline in the middle of the bar, never below it) is documented in `README.md`; keep it.
 - The footer lives in `src/app/shared/components/footer/`. Its link columns, legal links and payment methods are data in `footer-contenido.ts`; site contact data (phone, social networks) is in `src/app/config/sitio.config.ts`. Change the data there, not in the template.
+- Vehicle brands live in `src/app/features/marcas/`: the list is `data/marcas.data.ts` and the logos are `public/marcas/<slug>.webp`, normalized to 400×250 as described in `README.md`. Brand logos in cards use `NgOptimizedImage` with `alt=""` (the brand name is the link text) and must fall back to initials when missing.
 
 ## Styles and Angular Material
 

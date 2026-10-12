@@ -52,7 +52,7 @@ describe('FooterComponent', () => {
       const titulo = nav.querySelector('h2')!;
       expect(nav.getAttribute('aria-labelledby')).toBe(titulo.id);
     }
-    expect(columnas[0].querySelector('a')?.getAttribute('href')).toBe('/ofertas');
+    expect(columnas[0].querySelector('a')?.getAttribute('href')).toBe('/diagramas/ecu');
   });
 
   it('lista los enlaces legales y los métodos de pago con nombre accesible', () => {
@@ -65,6 +65,12 @@ describe('FooterComponent', () => {
     for (const pago of pagos) {
       expect(pago.getAttribute('role')).toBe('img');
     }
+  });
+
+  it('aclara que las marcas y logos son de sus dueños', () => {
+    expect(elemento.querySelector('.footer__aviso')?.textContent?.trim()).toBe(
+      'Las marcas y logos pertenecen a sus respectivos dueños.',
+    );
   });
 
   it('muestra el año actual en los créditos', () => {
