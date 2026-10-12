@@ -55,6 +55,14 @@ public/marcas/         # logos de las marcas (<slug>.webp)
 
 Cada feature expone un `*.routes.ts` (`INICIO_ROUTES`, …) y se registra en `app.routes.ts` con `loadChildren`, dentro de los hijos de `MainLayoutComponent`.
 
+### Navegación: rutas, no pestañas
+
+A diferencia de `ultron-gestion-activos-frontend`, acá **no se usan pestañas** para navegar. Allá cada módulo se abre como una pestaña dentro de la app (`TabService` y `TabsComponent`); eso no se copia.
+
+En Red Automotriz cada página es una ruta con su propia URL (`/`, `/marcas/<slug>`, …). Se muestra en el `router-outlet` del layout y se llega con `routerLink`. Así cada página se puede compartir, guardar en favoritos, abrir con el botón atrás del navegador y prerenderizar con SSR.
+
+Solo se usan pestañas cuando se pidan explícitamente para algo puntual. Aun así, si cada pestaña muestra una página, conviene que tenga su propia ruta.
+
 ## Menú superior (`shared/components/header`)
 
 Copia el estilo del menú de referencia (barra roja `#EA1414`, marca en Poppins seminegrita a la izquierda e iconos a la derecha) con estos cambios:
