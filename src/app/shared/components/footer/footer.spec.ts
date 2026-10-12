@@ -68,7 +68,7 @@ describe('FooterComponent', () => {
   });
 
   it('muestra el año actual en los créditos', () => {
-    expect(elemento.querySelector('.footer__creditos')?.textContent).toContain(
+    expect(elemento.querySelector('.footer__creditos')?.textContent?.trim()).toBe(
       `© ${new Date().getFullYear()} Red Automotriz.`,
     );
   });
