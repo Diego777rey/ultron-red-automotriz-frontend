@@ -1,0 +1,55 @@
+<header>
+  <mat-toolbar class="header">
+    <a class="header__marca" routerLink="/" aria-label="Red Automotriz, ir al inicio"
+      >Red Automotriz.</a
+    >
+
+    <form
+      id="busqueda-principal"
+      class="header__busqueda"
+      [class.header__busqueda--abierta]="busquedaAbierta()"
+      role="search"
+      (submit)="enviarBusqueda($event)"
+    >
+      <label class="header__busqueda-icono" for="campo-busqueda">
+        <mat-icon fontSet="material-icons-outlined" aria-hidden="true">search</mat-icon>
+      </label>
+      <input
+        #campoBusqueda
+        id="campo-busqueda"
+        class="header__busqueda-campo"
+        type="search"
+        autocomplete="off"
+        aria-label="Buscar en Red Automotriz"
+        [formField]="formularioBusqueda.termino"
+        (keydown.escape)="cerrarBusqueda()"
+      />
+    </form>
+
+    <nav class="header__acciones" aria-label="Accesos rápidos">
+      <button
+        #botonBusqueda
+        mat-icon-button
+        type="button"
+        aria-label="Buscar"
+        aria-controls="busqueda-principal"
+        (click)="mostrarBusqueda()"
+      >
+        <mat-icon>search</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        type="button"
+        class="header__carrito"
+        [attr.aria-label]="etiquetaCarrito()"
+        (click)="abrirCarrito.emit()"
+      >
+        <mat-icon>shopping_cart</mat-icon>
+        <span class="header__contador" aria-hidden="true">{{ cantidadCarrito() }}</span>
+      </button>
+      <button mat-icon-button type="button" aria-label="Mi cuenta" (click)="abrirCuenta.emit()">
+        <mat-icon fontSet="material-icons-outlined">person</mat-icon>
+      </button>
+    </nav>
+  </mat-toolbar>
+</header>

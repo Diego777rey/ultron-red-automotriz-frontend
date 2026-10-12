@@ -1,0 +1,146 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.header {
+  @include mat.toolbar-overrides(
+    (
+      container-background-color: var(--brand-color),
+      container-text-color: var(--on-brand-color),
+      standard-height: var(--header-height),
+      mobile-height: var(--header-height),
+    )
+  );
+  @include mat.icon-button-overrides(
+    (
+      icon-size: 20px,
+      icon-color: var(--on-brand-color),
+      state-layer-color: var(--on-brand-color),
+      ripple-color: rgba(255, 255, 255, 0.2),
+    )
+  );
+
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr minmax(0, 420px) 1fr;
+  align-items: center;
+  gap: 16px;
+  padding-inline: 28px;
+  font-family: var(--font-brand);
+}
+
+.header__marca {
+  justify-self: start;
+  color: var(--on-brand-color);
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.header__busqueda {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+}
+
+.header__busqueda-icono {
+  display: flex;
+  color: var(--on-brand-muted);
+  cursor: text;
+
+  mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.header__busqueda-campo {
+  flex: 1;
+  min-width: 0;
+  padding: 6px 0;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  background: transparent;
+  color: var(--on-brand-color);
+  font: inherit;
+  font-size: 0.95rem;
+  caret-color: var(--on-brand-color);
+
+  &:focus-visible {
+    outline: none;
+    border-bottom-color: var(--on-brand-color);
+  }
+
+  &::-webkit-search-cancel-button {
+    filter: brightness(0) invert(1);
+  }
+}
+
+.header__marca:focus-visible,
+.header__acciones button:focus-visible {
+  outline: 2px solid var(--on-brand-color);
+  outline-offset: 2px;
+}
+
+.header__acciones {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+}
+
+.header__carrito {
+  margin-right: 8px;
+}
+
+.header__contador {
+  position: absolute;
+  top: 50%;
+  right: -6px;
+  min-width: 16px;
+  height: 16px;
+  padding-inline: 4px;
+  border-radius: 8px;
+  background: var(--on-brand-color);
+  color: var(--brand-color);
+  font-size: 0.65rem;
+  font-weight: 600;
+  line-height: 16px;
+  text-align: center;
+  transform: translateY(-50%);
+}
+
+@media (max-width: 767px) {
+  .header {
+    grid-template-columns: 1fr auto;
+    padding-inline: 16px;
+  }
+
+  .header__marca {
+    font-size: 1.25rem;
+  }
+
+  .header__busqueda {
+    display: none;
+    position: absolute;
+    inset: 100% 0 auto;
+    padding: 8px 16px 12px;
+    background: var(--brand-color);
+  }
+
+  .header__busqueda--abierta {
+    display: flex;
+  }
+
+  .header__busqueda-campo {
+    border-bottom-color: var(--on-brand-muted);
+  }
+}
