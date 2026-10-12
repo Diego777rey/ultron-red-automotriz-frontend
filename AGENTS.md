@@ -37,6 +37,31 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Do NOT import `CommonModule`, import only the directives and pipes the template uses, such as `AsyncPipe` or `DatePipe`
 - When using external templates/styles, use paths relative to the component TS file.
 
+## Project Structure
+
+This is the Red Automotriz web app (Angular + Angular Material + SSR). It follows the same architecture as `ultron-gestion-activos-frontend`:
+
+- `src/app/core/`: app-wide singleton services (auth, interceptors, guards).
+- `src/app/layouts/main-layout/`: header menu + `<main>` with the page `router-outlet`.
+- `src/app/shared/`: reusable components, models, services, pipes and directives. Export them from `src/app/shared/index.ts`.
+- `src/app/features/<feature>/`: one folder per business feature, with `<feature>.routes.ts` (`<FEATURE>_ROUTES`) and `pages/`. Register it in `app.routes.ts` with `loadChildren`, as a child of `MainLayoutComponent`.
+- The header menu lives in `src/app/shared/components/header/`. Its layout (brand, center search, then search, cart and user icons) is documented in `README.md`; keep it.
+
+## Styles and Angular Material
+
+- Use Angular Material components (`mat-toolbar`, `mat-icon-button`, `mat-icon`, …) before writing custom ones.
+- Customize Material with the `mat.*-overrides` mixins in the component SCSS. Do NOT use `::ng-deep` or target internal `.mat-mdc-*` classes.
+- Colors come from the CSS variables in `src/styles.scss` (`:root`): `--brand-color`, `--on-brand-color`, `--on-brand-muted`, `--bg-color`, `--text-primary`, `--text-secondary`. Do NOT hardcode colors in components; if a token is missing, add it to `src/styles.scss`.
+- `--on-brand-muted` over `--brand-color` is only 3:1: use it for icons and borders, never for text.
+- Icons use the `material-icons` font. Use `fontSet="material-icons-outlined"` for outlined icons.
+- Keep each component stylesheet under the 4 kB budget.
+
+## Git Workflow
+
+- Branch from `develop` with a valid prefix (`feat/`, `fix/`, `refactor/`, `test/`, `docs/`, `chore/`, `style/`, `cursor/`) and open the PR to `develop`.
+- Only `develop` merges into `main`.
+- There is no release yet: merging into `main` must not trigger any workflow. Do NOT add release or versioning jobs unless asked. See `CONTRIBUTING.md`.
+
 ## State Management
 
 - Use signals for local component state
