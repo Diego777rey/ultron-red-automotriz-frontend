@@ -75,7 +75,7 @@ Sigue el pie de la referencia: fondo `--brand-color`, una fila de columnas, una 
 
 - **Contacto:** marca, "¿Necesitas ayuda?", enlace a Atención al Cliente, teléfono (enlace `tel:`) y redes sociales (se abren en otra pestaña y lo avisan en la etiqueta).
 - **Columnas:** Menú, Categorías, Info y Mi cuenta. Cada una es un `<nav>` nombrado por su título.
-- **Legales:** Envíos y devoluciones, Términos y condiciones, Política de privacidad y Métodos de pago.
+- **Legales:** Términos y condiciones, Política de privacidad y Métodos de pago.
 - **Pagos:** Mastercard, American Express, JCB, Discover, Visa, PayPal y Diners Club.
 - **Créditos:** "© {año} Red Automotriz. Creado por Ultron Sistemas."
 

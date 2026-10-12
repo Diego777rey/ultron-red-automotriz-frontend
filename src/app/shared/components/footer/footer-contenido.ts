@@ -55,7 +55,6 @@ export const COLUMNAS_FOOTER: readonly ColumnaFooter[] = [
 ];
 
 export const ENLACES_LEGALES: readonly EnlaceFooter[] = [
-  { etiqueta: 'Envíos y devoluciones', ruta: '/envios-y-devoluciones' },
   { etiqueta: 'Términos y condiciones', ruta: '/terminos-y-condiciones' },
   { etiqueta: 'Política de privacidad', ruta: '/politica-de-privacidad' },
   { etiqueta: 'Métodos de pago', ruta: '/metodos-de-pago' },
