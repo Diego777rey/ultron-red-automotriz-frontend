@@ -27,13 +27,16 @@ Es la misma que en `ultron-gestion-activos-frontend`:
 src/app/
 ├── app.ts, app.config.ts, app.routes.ts     # raíz: solo <router-outlet />, providers y rutas
 ├── app.config.server.ts, app.routes.server.ts
-├── config/            # configuración de la app (URLs de API, versión), cuando haga falta
+├── config/            # configuración de la app: sitio.config.ts (contacto y redes)
 ├── core/              # servicios singleton transversales (auth, interceptores, guards)
 ├── layouts/
-│   └── main-layout/   # menú superior + <main> con el router-outlet de las páginas
+│   └── main-layout/   # menú superior + <main> con el router-outlet + pie de página
 ├── shared/            # piezas reutilizables, exportadas desde shared/index.ts
+│   ├── models/        # interfaces compartidas (footer.model.ts)
 │   └── components/
-│       └── header/    # el menú superior (ver abajo)
+│       ├── header/    # el menú superior (ver abajo)
+│       ├── footer/    # el pie de página (ver abajo)
+│       └── svg-icon/  # logos de marcas en SVG
 └── features/          # un directorio por módulo de negocio, cargado de forma lazy
     └── inicio/
         ├── inicio.routes.ts
@@ -65,6 +68,26 @@ Comportamiento:
 - Todavía no hay páginas de búsqueda, carrito ni cuenta: el layout no escucha esas salidas. Al crear esas features, conectarlas en `MainLayoutComponent`.
 
 Material: `mat-toolbar`, `mat-icon-button` y `mat-icon` (fuente `material-icons`; el usuario usa la variante `material-icons-outlined`). Los colores de la barra se ajustan con `mat.toolbar-overrides` y `mat.icon-button-overrides` en `header.scss`, usando los tokens de `src/styles.scss`.
+
+## Pie de página (`shared/components/footer`)
+
+Sigue el pie de la referencia: fondo `--brand-color`, una fila de columnas, una línea divisoria, los enlaces legales, los métodos de pago y una franja blanca con los créditos.
+
+- **Contacto:** marca, "¿Necesitas ayuda?", enlace a Atención al Cliente, teléfono (enlace `tel:`) y redes sociales (se abren en otra pestaña y lo avisan en la etiqueta).
+- **Columnas:** Menú, Categorías, Info y Mi cuenta. Cada una es un `<nav>` nombrado por su título.
+- **Legales:** Envíos y devoluciones, Términos y condiciones, Política de privacidad y Métodos de pago.
+- **Pagos:** Mastercard, American Express, JCB, Discover, Visa, PayPal y Diners Club.
+- **Créditos:** "© {año} Red Automotriz. Creado por Ultron Sistemas."
+
+Dónde se cambia cada cosa:
+
+- Teléfono y redes sociales: `src/app/config/sitio.config.ts`. **Los valores actuales son provisorios** (`+595 21 000 000` y las portadas de cada red); hay que reemplazarlos por los reales.
+- Columnas, enlaces legales y métodos de pago: `shared/components/footer/footer-contenido.ts`.
+- Las rutas de esos enlaces todavía no tienen página: el comodín `**` de `app.routes.ts` las manda al inicio hasta que se cree cada feature.
+
+Los logos de redes y tarjetas no existen en Material Icons. Salen de `@fortawesome/free-brands-svg-icons` (licencia CC BY 4.0) y se dibujan con `app-svg-icon` (`shared/components/svg-icon`), que solo agrega al bundle los logos importados.
+
+En pantallas de menos de 1024 px las columnas pasan a dos por fila, con el bloque de contacto arriba ocupando todo el ancho.
 
 ## Estilos
 

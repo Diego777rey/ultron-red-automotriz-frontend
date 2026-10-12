@@ -1,0 +1,67 @@
+<footer>
+  <div class="footer">
+    <div class="footer__columnas">
+      <section class="footer__contacto" aria-labelledby="footer-ayuda">
+        <a class="footer__marca" routerLink="/" aria-label="Red Automotriz, ir al inicio"
+          >Red Automotriz.</a
+        >
+        <h2 id="footer-ayuda" class="footer__ayuda">¿Necesitas ayuda?</h2>
+        <p class="footer__texto">
+          Visita <a routerLink="/atencion-al-cliente">Atención al Cliente</a> para ayuda o llámanos
+          al
+        </p>
+        <a class="footer__telefono" [href]="sitio.telefono.enlace">{{ sitio.telefono.visible }}</a>
+        <ul class="footer__redes" aria-label="Redes sociales">
+          @for (red of sitio.redes; track red.nombre) {
+            <li>
+              <a
+                [href]="red.url"
+                target="_blank"
+                rel="noopener noreferrer"
+                [attr.aria-label]="red.nombre + ' (se abre en una pestaña nueva)'"
+              >
+                <app-svg-icon [icono]="red.icono" />
+              </a>
+            </li>
+          }
+        </ul>
+      </section>
+
+      @for (columna of columnas; track columna.titulo) {
+        <nav class="footer__columna" [attr.aria-labelledby]="'footer-columna-' + $index">
+          <h2 [id]="'footer-columna-' + $index" class="footer__titulo">{{ columna.titulo }}</h2>
+          <ul class="footer__lista">
+            @for (enlace of columna.enlaces; track enlace.ruta) {
+              <li>
+                <a [routerLink]="enlace.ruta">{{ enlace.etiqueta }}</a>
+              </li>
+            }
+          </ul>
+        </nav>
+      }
+    </div>
+
+    <nav class="footer__legales" aria-label="Información legal">
+      <ul>
+        @for (enlace of enlacesLegales; track enlace.ruta) {
+          <li>
+            <a [routerLink]="enlace.ruta">{{ enlace.etiqueta }}</a>
+          </li>
+        }
+      </ul>
+    </nav>
+
+    <section class="footer__pagos" aria-labelledby="footer-pagos">
+      <h2 id="footer-pagos" class="footer__titulo">Aceptamos los siguientes métodos de pago</h2>
+      <ul>
+        @for (pago of metodosPago; track pago.nombre) {
+          <li>
+            <app-svg-icon [icono]="pago.icono" role="img" [attr.aria-label]="pago.nombre" />
+          </li>
+        }
+      </ul>
+    </section>
+  </div>
+
+  <p class="footer__creditos">© {{ anio }} {{ sitio.nombre }}. Creado por Ultron Sistemas.</p>
+</footer>

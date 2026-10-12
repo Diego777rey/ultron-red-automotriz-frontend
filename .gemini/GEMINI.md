@@ -46,6 +46,7 @@ This is the Red Automotriz web app (Angular + Angular Material + SSR). It follow
 - `src/app/shared/`: reusable components, models, services, pipes and directives. Export them from `src/app/shared/index.ts`.
 - `src/app/features/<feature>/`: one folder per business feature, with `<feature>.routes.ts` (`<FEATURE>_ROUTES`) and `pages/`. Register it in `app.routes.ts` with `loadChildren`, as a child of `MainLayoutComponent`.
 - The header menu lives in `src/app/shared/components/header/`. Its layout (brand on the left; search, cart and user icons on the right; search opens inline in the middle of the bar, never below it) is documented in `README.md`; keep it.
+- The footer lives in `src/app/shared/components/footer/`. Its link columns, legal links and payment methods are data in `footer-contenido.ts`; site contact data (phone, social networks) is in `src/app/config/sitio.config.ts`. Change the data there, not in the template.
 
 ## Styles and Angular Material
 
@@ -54,6 +55,8 @@ This is the Red Automotriz web app (Angular + Angular Material + SSR). It follow
 - Colors come from the CSS variables in `src/styles.scss` (`:root`): `--brand-color`, `--on-brand-color`, `--on-brand-muted`, `--bg-color`, `--text-primary`, `--text-secondary`. Do NOT hardcode colors in components; if a token is missing, add it to `src/styles.scss`.
 - `--on-brand-muted` over `--brand-color` is only 3:1: use it for icons and borders, never for text.
 - Icons use the `material-icons` font. Use `fontSet="material-icons-outlined"` for outlined icons.
+- Brand logos (social networks, payment cards) that Material Icons lacks come from `@fortawesome/free-brands-svg-icons` and are rendered with `app-svg-icon`. Import each icon by name so the rest is tree-shaken. `app-svg-icon` is decorative: give its parent link an `aria-label`, or set `role="img"` and `aria-label` on it.
+- Every external link uses `target="_blank" rel="noopener noreferrer"` and says it opens a new tab in its accessible name.
 - Keep each component stylesheet under the 4 kB budget.
 
 ## Git Workflow

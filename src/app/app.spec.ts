@@ -16,7 +16,7 @@ describe('App', () => {
     expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('muestra el menú y la página de inicio en la ruta raíz', async () => {
+  it('muestra el menú, la página de inicio y el pie en la ruta raíz', async () => {
     const harness = await RouterTestingHarness.create('/');
     const elemento = harness.routeNativeElement as HTMLElement;
 
@@ -24,5 +24,6 @@ describe('App', () => {
       'Red Automotriz.',
     );
     expect(elemento.querySelector('h1')?.textContent).toBe('Red Automotriz');
+    expect(document.querySelector('app-footer footer')).not.toBeNull();
   });
 });
