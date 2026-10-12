@@ -1,0 +1,140 @@
+:host {
+  display: block;
+  background: var(--brand-color);
+  color: var(--on-brand-color);
+  font-size: 0.875rem;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+
+  &:focus-visible {
+    outline: 2px solid var(--on-brand-color);
+    outline-offset: 2px;
+  }
+}
+
+.footer {
+  max-width: var(--content-max-width);
+  margin-inline: auto;
+  padding: 56px 28px 40px;
+}
+
+.footer__columnas {
+  display: grid;
+  grid-template-columns: 1.4fr repeat(4, 1fr);
+  gap: 32px;
+  padding-bottom: 48px;
+  border-bottom: 1px solid var(--on-brand-muted);
+}
+
+.footer__marca {
+  display: inline-block;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.footer__ayuda,
+.footer__titulo {
+  margin: 0 0 16px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.footer__texto {
+  margin: 0 0 12px;
+  line-height: 1.6;
+}
+
+.footer__telefono {
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.footer__redes {
+  display: flex;
+  gap: 16px;
+  margin-top: 40px;
+  font-size: 1.1rem;
+
+  a {
+    display: flex;
+  }
+}
+
+.footer__lista {
+  display: grid;
+  gap: 12px;
+
+  a {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.footer__legales ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px 28px;
+  padding-block: 32px;
+}
+
+.footer__pagos {
+  text-align: center;
+
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+    font-size: 2.5rem;
+  }
+}
+
+.footer__aviso {
+  margin: 24px 0 0;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.footer__creditos {
+  margin: 0;
+  padding: 16px 28px;
+  background: var(--bg-color);
+  color: var(--text-primary);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+@media (max-width: 1023px) {
+  .footer__columnas {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .footer__contacto {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 767px) {
+  .footer {
+    padding-inline: 16px;
+  }
+
+  .footer__pagos ul {
+    font-size: 2rem;
+  }
+}

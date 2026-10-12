@@ -16,13 +16,17 @@ describe('App', () => {
     expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('muestra el menú y la página de inicio en la ruta raíz', async () => {
+  it('muestra el menú, la página de inicio y el pie en la ruta raíz', async () => {
     const harness = await RouterTestingHarness.create('/');
     const elemento = harness.routeNativeElement as HTMLElement;
 
     expect(document.querySelector('app-header .header__marca')?.textContent?.trim()).toBe(
       'Red Automotriz.',
     );
-    expect(elemento.querySelector('h1')?.textContent).toBe('Red Automotriz');
+    expect(elemento.querySelector('h1')?.textContent).toBe(
+      'Diagramas eléctricos automotrices por marca',
+    );
+    expect(elemento.querySelectorAll('app-marca-card').length).toBeGreaterThan(0);
+    expect(document.querySelector('app-footer footer')).not.toBeNull();
   });
 });

@@ -39,13 +39,15 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 
 ## Project Structure
 
-This is the Red Automotriz web app (Angular + Angular Material + SSR). It follows the same architecture as `ultron-gestion-activos-frontend`:
+This is the Red Automotriz web app (Angular + Angular Material + SSR). It sells automotive electrical diagrams (ECU, dashboards, immobilizers, airbag, pinouts) organized by vehicle brand; it does NOT sell parts or services, so keep copy and links about diagrams. It follows the same architecture as `ultron-gestion-activos-frontend`:
 
 - `src/app/core/`: app-wide singleton services (auth, interceptors, guards).
 - `src/app/layouts/main-layout/`: header menu + `<main>` with the page `router-outlet`.
 - `src/app/shared/`: reusable components, models, services, pipes and directives. Export them from `src/app/shared/index.ts`.
 - `src/app/features/<feature>/`: one folder per business feature, with `<feature>.routes.ts` (`<FEATURE>_ROUTES`) and `pages/`. Register it in `app.routes.ts` with `loadChildren`, as a child of `MainLayoutComponent`.
 - The header menu lives in `src/app/shared/components/header/`. Its layout (brand on the left; search, cart and user icons on the right; search opens inline in the middle of the bar, never below it) is documented in `README.md`; keep it.
+- The footer lives in `src/app/shared/components/footer/`. Its link columns, legal links and payment methods are data in `footer-contenido.ts`; site contact data (phone, social networks) is in `src/app/config/sitio.config.ts`. Change the data there, not in the template.
+- Vehicle brands live in `src/app/features/marcas/`: the list is `data/marcas.data.ts` and the logos are `public/marcas/<slug>.webp`, normalized to 400×250 as described in `README.md`. Brand logos in cards use `NgOptimizedImage` with `alt=""` (the brand name is the link text) and must fall back to initials when missing.
 
 ## Styles and Angular Material
 
@@ -54,6 +56,8 @@ This is the Red Automotriz web app (Angular + Angular Material + SSR). It follow
 - Colors come from the CSS variables in `src/styles.scss` (`:root`): `--brand-color`, `--on-brand-color`, `--on-brand-muted`, `--bg-color`, `--text-primary`, `--text-secondary`. Do NOT hardcode colors in components; if a token is missing, add it to `src/styles.scss`.
 - `--on-brand-muted` over `--brand-color` is only 3:1: use it for icons and borders, never for text.
 - Icons use the `material-icons` font. Use `fontSet="material-icons-outlined"` for outlined icons.
+- Brand logos (social networks, payment cards) that Material Icons lacks come from `@fortawesome/free-brands-svg-icons` and are rendered with `app-svg-icon`. Import each icon by name so the rest is tree-shaken. `app-svg-icon` is decorative: give its parent link an `aria-label`, or set `role="img"` and `aria-label` on it.
+- Every external link uses `target="_blank" rel="noopener noreferrer"` and says it opens a new tab in its accessible name.
 - Keep each component stylesheet under the 4 kB budget.
 
 ## Git Workflow
