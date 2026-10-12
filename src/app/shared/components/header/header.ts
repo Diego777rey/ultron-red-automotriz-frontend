@@ -47,7 +47,11 @@ export class HeaderComponent {
     return `Carrito, ${cantidad} ${cantidad === 1 ? 'producto' : 'productos'}`;
   });
 
-  mostrarBusqueda(): void {
+  alternarBusqueda(): void {
+    if (this.busquedaAbierta()) {
+      this.busquedaAbierta.set(false);
+      return;
+    }
     this.busquedaAbierta.set(true);
     afterNextRender(() => this.campoBusqueda().nativeElement.focus(), { injector: this.injector });
   }

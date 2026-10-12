@@ -26,8 +26,8 @@
   );
 
   position: relative;
-  display: grid;
-  grid-template-columns: 1fr minmax(0, 420px) 1fr;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 16px;
   padding-inline: 28px;
@@ -35,7 +35,6 @@
 }
 
 .header__marca {
-  justify-self: start;
   color: var(--on-brand-color);
   font-size: 1.5rem;
   font-weight: 600;
@@ -45,22 +44,15 @@
 }
 
 .header__busqueda {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  min-width: 0;
+  display: none;
+  position: absolute;
+  inset: 100% 0 auto;
+  padding: 8px 28px 16px;
+  background: var(--brand-color);
 }
 
-.header__busqueda-icono {
+.header__busqueda--abierta {
   display: flex;
-  color: var(--on-brand-muted);
-  cursor: text;
-
-  mat-icon {
-    font-size: 20px;
-    width: 20px;
-    height: 20px;
-  }
 }
 
 .header__busqueda-campo {
@@ -68,12 +60,18 @@
   min-width: 0;
   padding: 6px 0;
   border: 0;
-  border-bottom: 1px solid transparent;
+  border-bottom: 1px solid var(--on-brand-muted);
   background: transparent;
   color: var(--on-brand-color);
   font: inherit;
   font-size: 0.95rem;
   caret-color: var(--on-brand-color);
+
+  // Blanco pleno: con menos opacidad el texto no llega a 4.5:1 sobre --brand-color.
+  &::placeholder {
+    color: var(--on-brand-color);
+    opacity: 1;
+  }
 
   &:focus-visible {
     outline: none;
@@ -92,13 +90,14 @@
 }
 
 .header__acciones {
-  justify-self: end;
   display: flex;
   align-items: center;
+  gap: 12px;
 }
 
+// Deja lugar al contador, que sobresale a la derecha del carrito.
 .header__carrito {
-  margin-right: 8px;
+  margin-right: 6px;
 }
 
 .header__contador {
@@ -120,7 +119,6 @@
 
 @media (max-width: 767px) {
   .header {
-    grid-template-columns: 1fr auto;
     padding-inline: 16px;
   }
 
@@ -129,18 +127,10 @@
   }
 
   .header__busqueda {
-    display: none;
-    position: absolute;
-    inset: 100% 0 auto;
-    padding: 8px 16px 12px;
-    background: var(--brand-color);
+    padding-inline: 16px;
   }
 
-  .header__busqueda--abierta {
-    display: flex;
-  }
-
-  .header__busqueda-campo {
-    border-bottom-color: var(--on-brand-muted);
+  .header__acciones {
+    gap: 4px;
   }
 }

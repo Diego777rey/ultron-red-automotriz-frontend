@@ -44,19 +44,22 @@ Cada feature expone un `*.routes.ts` (`INICIO_ROUTES`, …) y se registra en `ap
 
 ## Menú superior (`shared/components/header`)
 
-Copia el estilo del menú de referencia (barra roja `#EA1414`, marca en Poppins seminegrita a la izquierda, búsqueda al centro e iconos a la derecha) con estos cambios:
+Copia el estilo del menú de referencia (barra roja `#EA1414`, marca en Poppins seminegrita a la izquierda e iconos a la derecha) con estos cambios:
 
 | Referencia | Red Automotriz |
 |------------|----------------|
 | Marca "Trébol." | "Red Automotriz." (enlace al inicio) |
+| Lupa del centro | Se quitó |
 | Icono de ubicación | Lupa |
 | Corazón | Carrito, con el contador de productos |
 | Carrito | Usuario |
 
+Los iconos de la derecha están un poco más separados que en la referencia (12 px entre botones; 4 px en móvil).
+
 Comportamiento:
 
-- La lupa del centro es el campo de búsqueda (sin borde, como en la referencia). Al enviar, el header emite `buscar` con el término sin espacios; vacío no emite.
-- La lupa de la derecha da el foco al campo. En pantallas de menos de 768 px el campo central se oculta y esa lupa lo abre debajo de la barra; `Escape` lo cierra y devuelve el foco a la lupa.
+- La lupa abre el campo de búsqueda debajo de la barra y le da el foco; otro clic lo cierra. `Escape` también lo cierra y devuelve el foco a la lupa.
+- Al enviar, el header emite `buscar` con el término sin espacios; vacío no emite.
 - El carrito emite `abrirCarrito` y muestra `cantidadCarrito` (input, por defecto 0). El usuario emite `abrirCuenta`.
 - Todavía no hay páginas de búsqueda, carrito ni cuenta: el layout no escucha esas salidas. Al crear esas features, conectarlas en `MainLayoutComponent`.
 

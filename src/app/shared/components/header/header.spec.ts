@@ -50,13 +50,27 @@ describe('HeaderComponent', () => {
     expect(carrito.getAttribute('aria-label')).toBe('Carrito, 1 producto');
   });
 
-  it('la lupa de los accesos abre la búsqueda y le da el foco al campo', async () => {
-    botonesDeAcciones()[0].click();
+  it('no muestra una lupa propia dentro de la búsqueda', () => {
+    expect(elemento.querySelector('form[role="search"] mat-icon')).toBeNull();
+  });
+
+  it('la lupa abre la búsqueda con foco en el campo y la vuelve a cerrar', async () => {
+    const lupa = botonesDeAcciones()[0];
+    const formulario = elemento.querySelector('form[role="search"]')!;
+    expect(lupa.getAttribute('aria-expanded')).toBe('false');
+
+    lupa.click();
     await fixture.whenStable();
 
-    const formulario = elemento.querySelector('form[role="search"]')!;
     expect(formulario.classList.contains('header__busqueda--abierta')).toBe(true);
+    expect(lupa.getAttribute('aria-expanded')).toBe('true');
     expect(document.activeElement).toBe(elemento.querySelector('#campo-busqueda'));
+
+    lupa.click();
+    await fixture.whenStable();
+
+    expect(formulario.classList.contains('header__busqueda--abierta')).toBe(false);
+    expect(lupa.getAttribute('aria-expanded')).toBe('false');
   });
 
   it('emite el término sin espacios al enviar y no emite si está vacío', async () => {
