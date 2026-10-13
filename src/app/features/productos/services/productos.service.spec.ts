@@ -16,6 +16,13 @@ describe('ProductosService', () => {
     expect(toyota.every((producto) => producto.marcaSlug === 'toyota')).toBe(true);
   });
 
+  it('incluye diagramas demo para marcas sin catálogo detallado', () => {
+    const alfa = servicio.porMarca('alfa-romeo');
+
+    expect(alfa).toHaveLength(3);
+    expect(alfa.every((producto) => producto.titulo.includes('(demo)'))).toBe(true);
+  });
+
   it('lista los modelos y años de una marca ordenados', () => {
     expect(servicio.modelosDe('toyota')).toEqual(['Corolla', 'Etios', 'Hilux']);
 

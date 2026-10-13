@@ -41,6 +41,7 @@ export const COLUMNAS_FOOTER: readonly ColumnaFooter[] = [
       { etiqueta: 'Preguntas frecuentes', ruta: '/preguntas-frecuentes' },
       { etiqueta: 'Acerca de', ruta: '/acerca-de' },
       { etiqueta: 'Atención al cliente', ruta: '/atencion-al-cliente' },
+      { etiqueta: 'Panel del vendedor (prototipo)', ruta: '/vendedor' },
       { etiqueta: 'Sucursales', ruta: '/sucursales' },
     ],
   },

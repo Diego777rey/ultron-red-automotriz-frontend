@@ -81,7 +81,7 @@ Material: `mat-toolbar`, `mat-icon-button` y `mat-icon` (fuente `material-icons`
 
 ## Marcas (`features/marcas`)
 
-El inicio muestra el título "Diagramas eléctricos automotrices por marca" y una grilla con una tarjeta por marca: el logo arriba y una franja roja con el nombre abajo. Toda la tarjeta es un enlace a `/marcas/<slug>`; esa página todavía no existe, así que por ahora el comodín `**` lleva al inicio.
+El inicio muestra el título "Diagramas eléctricos automotrices por marca" y una grilla con una tarjeta por marca: el logo arriba y una franja roja con el nombre abajo. Toda la tarjeta es un enlace a `/marcas/<slug>` (catálogo prototipo con tarjetas, precio en guaraníes y filtros por modelo y año). Las marcas sin datos reales muestran tres diagramas **(demo)**. Panel del vendedor: `/vendedor` (también en el pie, columna Info). Tras actualizar `develop`, reiniciá `npm start` para ver rutas nuevas.
 
 - La grilla tiene 4 columnas en escritorio, 3 debajo de 1024 px y 2 debajo de 600 px.
 - El logo es decorativo (`alt=""`): el nombre accesible del enlace es el nombre de la marca.

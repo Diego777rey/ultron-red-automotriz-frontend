@@ -1,10 +1,8 @@
-import { ProductoDiagrama } from '../models/producto.model';
+import { MARCAS } from '../../marcas/data/marcas.data';
+import { ProductoDiagrama, TipoDiagrama } from '../models/producto.model';
 
-/**
- * Catálogo inicial del prototipo. Cuando exista backend, estos
- * diagramas se van a cargar desde ahí (ver README de marcas).
- */
-export const PRODUCTOS_INICIALES: readonly ProductoDiagrama[] = [
+/** Diagramas con datos más realistas para marcas frecuentes. */
+const PRODUCTOS_DETALLE: readonly ProductoDiagrama[] = [
   {
     id: 'toyota-hilux-ecu-2015',
     marcaSlug: 'toyota',
@@ -156,3 +154,32 @@ export const PRODUCTOS_INICIALES: readonly ProductoDiagrama[] = [
     precio: 188000,
   },
 ];
+
+const MARCAS_CON_DETALLE = new Set(PRODUCTOS_DETALLE.map((producto) => producto.marcaSlug));
+
+const MODELOS_DEMO = ['Compacto', 'SUV', 'Pick-up'] as const;
+const TIPOS_DEMO: readonly TipoDiagrama[] = ['ECU', 'Tablero', 'Pinout'];
+
+/** Tres diagramas demo por marca para poder probar cualquier logo del inicio. */
+function productosDemoMarca(marcaSlug: string, nombreMarca: string): ProductoDiagrama[] {
+  return MODELOS_DEMO.map((modelo, indice) => ({
+    id: `demo-${marcaSlug}-${indice}`,
+    marcaSlug,
+    modelo,
+    anioDesde: 2018 + indice,
+    anioHasta: 2022 + indice,
+    tipo: TIPOS_DEMO[indice],
+    titulo: `Diagrama ${TIPOS_DEMO[indice]} ${nombreMarca} ${modelo} (demo)`,
+    precio: 125000 + indice * 15000,
+  }));
+}
+
+const PRODUCTOS_DEMO = MARCAS.filter((marca) => !MARCAS_CON_DETALLE.has(marca.slug)).flatMap((marca) =>
+  productosDemoMarca(marca.slug, marca.nombre),
+);
+
+/**
+ * Catálogo inicial del prototipo. Cuando exista backend, estos
+ * diagramas se van a cargar desde ahí (ver README de marcas).
+ */
+export const PRODUCTOS_INICIALES: readonly ProductoDiagrama[] = [...PRODUCTOS_DETALLE, ...PRODUCTOS_DEMO];
