@@ -43,12 +43,22 @@ src/app/
     ├── inicio/
     │   ├── inicio.routes.ts
     │   └── pages/inicio/          # título + grilla de marcas
-    └── marcas/
-        ├── models/marca.model.ts
-        ├── data/marcas.data.ts    # lista de marcas que se muestran
-        └── components/
-            ├── marca-card/        # tarjeta: logo + franja con el nombre
-            └── marcas-grid/       # grilla de tarjetas
+    ├── marcas/
+    │   ├── models/marca.model.ts
+    │   ├── data/marcas.data.ts    # lista de marcas que se muestran
+    │   ├── marcas.routes.ts       # /marcas/<slug>
+    │   ├── components/
+    │   │   ├── marca-card/        # tarjeta: logo + franja con el nombre
+    │   │   └── marcas-grid/       # grilla de tarjetas
+    │   └── pages/marca-detalle/   # diagramas de la marca, con filtros
+    ├── diagramas/
+    │   ├── models/diagrama.model.ts
+    │   ├── data/diagramas.data.ts # prototipos que se muestran en cada marca
+    │   ├── services/              # catálogo en memoria + lo que carga el vendedor
+    │   └── components/diagrama-card/
+    └── vendedor/
+        ├── vendedor.routes.ts     # /vendedor
+        └── pages/cargar-diagrama/ # formulario para cargar un diagrama
 
 public/marcas/         # logos de las marcas (<slug>.webp)
 ```
@@ -81,7 +91,11 @@ Material: `mat-toolbar`, `mat-icon-button` y `mat-icon` (fuente `material-icons`
 
 ## Marcas (`features/marcas`)
 
-El inicio muestra el título "Diagramas eléctricos automotrices por marca" y una grilla con una tarjeta por marca: el logo arriba y una franja roja con el nombre abajo. Toda la tarjeta es un enlace a `/marcas/<slug>`; esa página todavía no existe, así que por ahora el comodín `**` lleva al inicio.
+El inicio muestra el título "Diagramas eléctricos automotrices por marca" y una grilla con una tarjeta por marca: el logo arriba y una franja roja con el nombre abajo. Toda la tarjeta es un enlace a `/marcas/<slug>`.
+
+Esa página lista los diagramas de la marca en tarjetas (tipo, título, modelo, año y precio). Dos filtros, modelo y año, se combinan para dejar el artículo exacto. El modelo lista todos los de la marca; el año lista los del modelo elegido (o todos, si no hay modelo). Si el año no existe para el modelo nuevo, se limpia. Los precios son de muestra. Los prototipos están en `features/diagramas/data/diagramas.data.ts`, uno o más por cada marca. Si el slug no es una marca, la página avisa y vuelve al inicio.
+
+`/vendedor` es el prototipo del vendedor (también está en el pie, "Cargar diagramas", y en la página de la marca). El formulario pide marca, tipo, título, modelo, año, precio y descripción. Al enviar, el diagrama entra en el catálogo de esa marca y queda en `localStorage` de este navegador. Todavía no hay backend: al recargar se siguen viendo; en otro navegador, no.
 
 - La grilla tiene 4 columnas en escritorio, 3 debajo de 1024 px y 2 debajo de 600 px.
 - El logo es decorativo (`alt=""`): el nombre accesible del enlace es el nombre de la marca.
@@ -121,7 +135,7 @@ Dónde se cambia cada cosa:
 
 - Teléfono y redes sociales: `src/app/config/sitio.config.ts`. **Los valores actuales son provisorios** (`+595 21 000 000` y las portadas de cada red); hay que reemplazarlos por los reales.
 - Columnas, enlaces legales y métodos de pago: `shared/components/footer/footer-contenido.ts`.
-- Las rutas de esos enlaces todavía no tienen página: el comodín `**` de `app.routes.ts` las manda al inicio hasta que se cree cada feature.
+- "Cargar diagramas" abre `/vendedor`. El resto de esas rutas todavía no tiene página: el comodín `**` de `app.routes.ts` las manda al inicio hasta que se cree cada feature.
 
 Los logos de redes y tarjetas no existen en Material Icons. Salen de `@fortawesome/free-brands-svg-icons` (licencia CC BY 4.0) y se dibujan con `app-svg-icon` (`shared/components/svg-icon`), que solo agrega al bundle los logos importados.
 

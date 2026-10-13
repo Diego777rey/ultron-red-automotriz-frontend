@@ -1,0 +1,79 @@
+.cargar {
+  max-width: 760px;
+  margin-inline: auto;
+}
+
+h1,
+h2 {
+  margin: 12px 0 8px;
+  font-weight: 600;
+}
+
+h1 {
+  font-size: 2rem;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+h2 {
+  font-size: 1.25rem;
+}
+
+.cargar__volver,
+.cargar__aviso a,
+.cargar__acciones a {
+  color: var(--brand-color);
+  font-weight: 600;
+}
+
+.cargar__bajada,
+.cargar__aviso {
+  margin: 0 0 16px;
+  color: var(--text-secondary);
+}
+
+.cargar__campos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  column-gap: 16px;
+}
+
+.cargar__ancho {
+  grid-column: 1 / -1;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.cargar__formulario > button {
+  margin-top: 8px;
+}
+
+.cargar__lista ul {
+  display: grid;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cargar__acciones {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+@media (max-width: 599px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .cargar__campos {
+    grid-template-columns: 1fr;
+  }
+}

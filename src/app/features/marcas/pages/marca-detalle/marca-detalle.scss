@@ -1,0 +1,88 @@
+.marca-detalle {
+  max-width: 1000px;
+  margin-inline: auto;
+}
+
+h1 {
+  margin: 12px 0 8px;
+  font-size: 2rem;
+  font-weight: 600;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.marca-detalle__volver,
+.marca-detalle__vendedor a,
+.marca-detalle__vacio a {
+  color: var(--brand-color);
+  font-weight: 600;
+}
+
+.marca-detalle__bajada,
+.marca-detalle__resumen,
+.marca-detalle__vacio,
+.marca-detalle__vendedor {
+  margin: 0 0 16px;
+  color: var(--text-secondary);
+}
+
+.marca-detalle__filtros {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 240px));
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.marca-detalle__campo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+label {
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+select {
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-color);
+  color: var(--text-primary);
+  font: inherit;
+
+  &:focus-visible {
+    outline: 3px solid var(--brand-color);
+    outline-offset: 2px;
+  }
+}
+
+.marca-detalle__lista {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 0 0 24px;
+  padding: 0;
+  list-style: none;
+}
+
+@media (max-width: 1023px) {
+  .marca-detalle__lista {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 599px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .marca-detalle__filtros,
+  .marca-detalle__lista {
+    grid-template-columns: 1fr;
+  }
+}

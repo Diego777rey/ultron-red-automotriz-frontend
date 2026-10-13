@@ -4,6 +4,10 @@ function marca(nombre: string, slug: string): Marca {
   return { nombre, slug, logo: `marcas/${slug}.webp` };
 }
 
+export function buscarMarca(slug: string): Marca | undefined {
+  return MARCAS.find((marca) => marca.slug === slug);
+}
+
 export const MARCAS: readonly Marca[] = [
   marca('Alfa Romeo', 'alfa-romeo'),
   marca('Audi', 'audi'),

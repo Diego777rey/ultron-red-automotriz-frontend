@@ -1,0 +1,64 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+  height: 100%;
+}
+
+.diagrama-card {
+  @include mat.card-overrides(
+    (
+      outlined-container-color: var(--bg-color),
+      outlined-container-shape: 12px,
+    )
+  );
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+
+  mat-card-content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+  }
+}
+
+.diagrama-card__tipo {
+  display: inline-block;
+  margin: 0 0 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--brand-color);
+  color: var(--on-brand-color);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.diagrama-card__titulo {
+  margin: 0 0 8px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.diagrama-card__vehiculo {
+  margin: 0 0 8px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.diagrama-card__descripcion {
+  flex: 1;
+  margin: 0 0 16px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.diagrama-card__precio {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}

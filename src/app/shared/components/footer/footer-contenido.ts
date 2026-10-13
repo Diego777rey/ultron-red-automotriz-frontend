@@ -50,6 +50,7 @@ export const COLUMNAS_FOOTER: readonly ColumnaFooter[] = [
       { etiqueta: 'Mi carrito', ruta: '/carrito' },
       { etiqueta: 'Mis pedidos', ruta: '/mis-pedidos' },
       { etiqueta: 'Mi perfil', ruta: '/cuenta' },
+      { etiqueta: 'Cargar diagramas', ruta: '/vendedor' },
     ],
   },
 ];
