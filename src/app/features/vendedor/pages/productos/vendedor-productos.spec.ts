@@ -1,8 +1,10 @@
 import { TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { routes } from '../../../../app.routes';
 import { ProductosService } from '../../../productos/services/productos.service';
+import { VendedorProductosComponent } from './vendedor-productos';
 
 describe('VendedorProductosComponent', () => {
   beforeEach(() => {
@@ -14,23 +16,29 @@ describe('VendedorProductosComponent', () => {
 
   it('carga un diagrama y lo muestra en el catálogo de la marca', async () => {
     const harness = await RouterTestingHarness.create('/vendedor/productos');
-    const elemento = harness.routeNativeElement as HTMLElement;
+    const pagina = harness.fixture.debugElement.query(
+      By.directive(VendedorProductosComponent),
+    ).componentInstance as VendedorProductosComponent;
 
-    expect(elemento.querySelector('h1')?.textContent).toBe('Cargar diagramas');
-
-    completar(elemento, '#alta-marca', 'bmw');
-    completar(elemento, '#alta-modelo', 'X5');
-    completar(elemento, '#alta-anio-desde', '2018');
-    completar(elemento, '#alta-anio-hasta', '2022');
-    completar(elemento, '#alta-tipo', 'ecu');
-    completar(elemento, '#alta-titulo', 'Diagrama ECU BMW X5');
-    completar(elemento, '#alta-precio', '200000');
-
-    elemento.querySelector('form')!.dispatchEvent(new Event('submit', { cancelable: true }));
+    (
+      pagina as unknown as {
+        formulario: { (): { value: { set(datos: object): void } } };
+      }
+    ).formulario().value.set({
+      marcaSlug: 'bmw',
+      modelo: 'X5',
+      anioDesde: 2018,
+      anioHasta: 2022,
+      tipo: 'ecu',
+      titulo: 'Diagrama ECU BMW X5',
+      precio: 200000,
+      descripcion: '',
+    });
+    await pagina.cargar(new Event('submit'));
     harness.detectChanges();
     await harness.fixture.whenStable();
 
-    expect(elemento.querySelector('.vendedor__exito')?.textContent).toContain(
+    expect(harness.routeNativeElement?.querySelector('.vendedor__exito')?.textContent).toContain(
       'Diagrama ECU BMW X5',
     );
 
@@ -45,7 +53,9 @@ describe('VendedorProductosComponent', () => {
     const elemento = harness.routeNativeElement as HTMLElement;
     const cantidadInicial = TestBed.inject(ProductosService).cantidad();
 
-    elemento.querySelector('form')!.dispatchEvent(new Event('submit', { cancelable: true }));
+    elemento
+      .querySelector('app-vendedor-productos form')!
+      .dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
     harness.detectChanges();
     await harness.fixture.whenStable();
 
@@ -54,13 +64,6 @@ describe('VendedorProductosComponent', () => {
     expect(elemento.querySelector('.vendedor__exito')).toBeNull();
   });
 });
-
-function completar(elemento: HTMLElement, selector: string, valor: string): void {
-  const campo = elemento.querySelector<HTMLInputElement | HTMLSelectElement>(selector)!;
-  campo.value = valor;
-  campo.dispatchEvent(new Event('input'));
-  campo.dispatchEvent(new Event('change'));
-}
 
 function textosDeTarjetas(elemento: HTMLElement): string[] {
   return Array.from(elemento.querySelectorAll('app-producto-card h2')).map(

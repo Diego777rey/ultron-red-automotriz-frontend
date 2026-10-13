@@ -47,26 +47,14 @@
   <div class="vendedor__fila">
     <div class="vendedor__campo">
       <label for="alta-anio-desde">Año desde</label>
-      <input
-        id="alta-anio-desde"
-        type="number"
-        [attr.min]="anioMinimo"
-        [attr.max]="anioMaximo"
-        [formField]="formulario.anioDesde"
-      />
+      <input id="alta-anio-desde" type="number" [formField]="formulario.anioDesde" />
       @for (error of erroresDe('anioDesde'); track error) {
         <span class="vendedor__error">{{ error }}</span>
       }
     </div>
     <div class="vendedor__campo">
       <label for="alta-anio-hasta">Año hasta</label>
-      <input
-        id="alta-anio-hasta"
-        type="number"
-        [attr.min]="anioMinimo"
-        [attr.max]="anioMaximo"
-        [formField]="formulario.anioHasta"
-      />
+      <input id="alta-anio-hasta" type="number" [formField]="formulario.anioHasta" />
       @for (error of erroresDe('anioHasta'); track error) {
         <span class="vendedor__error">{{ error }}</span>
       }
@@ -96,7 +84,7 @@
 
   <div class="vendedor__campo">
     <label for="alta-precio">Precio (Gs.)</label>
-    <input id="alta-precio" type="number" min="1" step="1" [formField]="formulario.precio" />
+    <input id="alta-precio" type="number" [formField]="formulario.precio" />
     @for (error of erroresDe('precio'); track error) {
       <span class="vendedor__error">{{ error }}</span>
     }

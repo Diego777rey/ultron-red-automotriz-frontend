@@ -63,7 +63,7 @@ describe('MarcaComponent', () => {
     const elemento = harness.routeNativeElement as HTMLElement;
 
     expect(elemento.querySelector('h1')?.textContent).toBe('No encontramos esa marca');
-    expect(elemento.querySelector('a[href="/"]')?.textContent).toContain('Volvé al inicio');
+    expect(elemento.querySelector('.marca__vacio a')?.textContent).toContain('Volvé al inicio');
   });
 });
 

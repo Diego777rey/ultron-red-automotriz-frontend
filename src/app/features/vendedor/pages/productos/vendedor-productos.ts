@@ -46,8 +46,6 @@ export class VendedorProductosComponent {
 
   protected readonly marcas = MARCAS;
   protected readonly tipos = TIPOS_DIAGRAMA;
-  protected readonly anioMinimo = ANIO_MINIMO;
-  protected readonly anioMaximo = ANIO_MAXIMO;
   protected readonly formatearPrecio = formatearPrecio;
   protected readonly formatearAnios = formatearAnios;
 
