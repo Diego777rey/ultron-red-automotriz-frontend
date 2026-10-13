@@ -1,0 +1,74 @@
+.admin-productos {
+  max-width: 1400px;
+  margin-inline: auto;
+  padding: 24px 16px;
+
+  h1 {
+    margin: 0 0 8px;
+    font-size: 2rem;
+    font-weight: 600;
+  }
+}
+
+.admin-productos__descripcion {
+  margin: 0 0 32px;
+  color: var(--text-secondary);
+}
+
+.admin-productos__formulario,
+.admin-productos__listado {
+  margin-bottom: 32px;
+}
+
+.admin-productos__form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+
+  mat-form-field {
+    width: 100%;
+  }
+}
+
+.admin-productos__form-actions {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 16px;
+  justify-content: flex-end;
+  margin-top: 8px;
+}
+
+.admin-productos__tabla-container {
+  overflow-x: auto;
+
+  table {
+    width: 100%;
+  }
+
+  th {
+    font-weight: 600;
+  }
+
+  td,
+  th {
+    padding: 12px 8px;
+  }
+}
+
+.admin-productos__vacio {
+  padding: 32px;
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+@media (max-width: 599px) {
+  .admin-productos {
+    h1 {
+      font-size: 1.5rem;
+    }
+  }
+
+  .admin-productos__form {
+    grid-template-columns: 1fr;
+  }
+}

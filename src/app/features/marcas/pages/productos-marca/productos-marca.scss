@@ -1,0 +1,70 @@
+.productos-marca {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding: 24px 16px;
+}
+
+.productos-marca__header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 8px;
+
+  h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 600;
+  }
+}
+
+.productos-marca__descripcion {
+  margin: 0 0 24px;
+  color: var(--text-secondary);
+  padding-left: 56px;
+}
+
+.productos-marca__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.productos-marca__vacio,
+.productos-marca__error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 16px;
+  text-align: center;
+
+  mat-icon {
+    font-size: 64px;
+    width: 64px;
+    height: 64px;
+    color: var(--text-secondary);
+    margin-bottom: 16px;
+  }
+
+  p {
+    margin: 0 0 24px;
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+  }
+}
+
+@media (max-width: 599px) {
+  .productos-marca__header {
+    h1 {
+      font-size: 1.5rem;
+    }
+  }
+
+  .productos-marca__descripcion {
+    padding-left: 0;
+  }
+
+  .productos-marca__grid {
+    grid-template-columns: 1fr;
+  }
+}

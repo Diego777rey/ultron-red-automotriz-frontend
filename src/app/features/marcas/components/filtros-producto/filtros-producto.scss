@@ -1,0 +1,29 @@
+.filtros-producto {
+  padding: 24px;
+  background-color: var(--bg-color);
+  border-radius: 8px;
+  margin-bottom: 24px;
+
+  h3 {
+    margin: 0 0 16px;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+}
+
+.filtros-producto__campos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  align-items: start;
+
+  button {
+    margin-top: 8px;
+  }
+}
+
+@media (max-width: 599px) {
+  .filtros-producto__campos {
+    grid-template-columns: 1fr;
+  }
+}
