@@ -10,6 +10,15 @@ export const routes: Routes = [
         path: '',
         loadChildren: () => import('./features/inicio/inicio.routes').then((m) => m.INICIO_ROUTES),
       },
+      {
+        path: 'marcas',
+        loadChildren: () => import('./features/marcas/marcas.routes').then((m) => m.MARCAS_ROUTES),
+      },
+      {
+        path: 'vendedor',
+        loadChildren: () =>
+          import('./features/vendedor/vendedor.routes').then((m) => m.VENDEDOR_ROUTES),
+      },
     ],
   },
   {
