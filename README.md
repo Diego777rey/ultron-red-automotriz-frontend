@@ -75,13 +75,39 @@ Comportamiento:
 - En pantallas de menos de 768 px no hay lugar en el medio: mientras la búsqueda está abierta, el campo ocupa el lugar de la marca.
 - Al enviar, el header emite `buscar` con el término sin espacios; vacío no emite.
 - El carrito emite `abrirCarrito` y muestra `cantidadCarrito` (input, por defecto 0). El usuario emite `abrirCuenta`.
-- Todavía no hay páginas de búsqueda, carrito ni cuenta: el layout no escucha esas salidas. Al crear esas features, conectarlas en `MainLayoutComponent`.
+- El carrito y la cuenta están conectados en `MainLayoutComponent` (`/carrito`, `/cuenta`). La búsqueda todavía no tiene página propia.
 
 Material: `mat-toolbar`, `mat-icon-button` y `mat-icon` (fuente `material-icons`; el usuario usa la variante `material-icons-outlined`). Los colores de la barra se ajustan con `mat.toolbar-overrides` y `mat.icon-button-overrides` en `header.scss`, usando los tokens de `src/styles.scss`.
 
 ## Marcas (`features/marcas`)
 
-El inicio muestra el título "Diagramas eléctricos automotrices por marca" y una grilla con una tarjeta por marca: el logo arriba y una franja roja con el nombre abajo. Toda la tarjeta es un enlace a `/marcas/<slug>`; esa página todavía no existe, así que por ahora el comodín `**` lleva al inicio.
+El inicio muestra el título "Diagramas eléctricos automotrices por marca" y una grilla con una tarjeta por marca: el logo arriba y una franja roja con el nombre abajo. Toda la tarjeta es un enlace a `/marcas/<slug>` (catálogo con filtros por modelo y año, precio en guaraníes y botón agregar al carrito).
+
+## Tienda, cuentas y administración
+
+Dos experiencias separadas:
+
+| Área | Ruta | Quién |
+|------|------|--------|
+| Tienda (clientes) | `/`, `/marcas/:slug`, `/carrito`, `/checkout`, `/cuenta/*` | Compradores |
+| Administración (dueño) | `/admin/*` | Administrador de la tienda |
+
+### Clientes
+
+- **Registro:** `/cuenta/registro`
+- **Inicio de sesión:** `/cuenta/iniciar-sesion` (requerido para pagar en `/checkout`)
+- **Carrito:** icono del header o `/carrito`
+- **Pago con tarjeta:** `/checkout` — validación en frontend; en producción debe reemplazarse por tokenización (Stripe u otra pasarela). Tarjetas de prueba: cualquier número válido excepto los que terminan en `0000` (simulan rechazo).
+
+### Administrador (dueño / vendedor)
+
+- **Acceso:** `/admin/acceso` (también en el pie → Info → “Administración de la tienda”)
+- **Panel:** `/admin` — métricas, CRUD de productos (`/admin/productos`), listado de clientes registrados
+- Credenciales iniciales (hasta conectar backend): ver `src/app/config/sitio.config.ts` (`adminInicial`). Cambiarlas antes de producción.
+
+La persistencia actual usa `localStorage` / `sessionStorage` vía `AlmacenLocalService` y `ProductosRepository`; al integrar el API de Ultron, reemplazar esos repositorios sin tocar los componentes de la tienda.
+
+Tras `git pull`, reiniciar `npm start` para cargar rutas nuevas.
 
 - La grilla tiene 4 columnas en escritorio, 3 debajo de 1024 px y 2 debajo de 600 px.
 - El logo es decorativo (`alt=""`): el nombre accesible del enlace es el nombre de la marca.

@@ -1,0 +1,56 @@
+@use '@angular/material' as mat;
+
+.admin-layout {
+  min-height: 100dvh;
+  background: var(--bg-color);
+}
+
+.admin-layout__panel {
+  display: flex;
+  flex-direction: column;
+  width: 260px;
+  min-height: 100%;
+  padding: 16px 0;
+  border-right: 1px solid color-mix(in srgb, var(--text-secondary) 25%, transparent);
+}
+
+.admin-layout__marca {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 0 16px 16px;
+  font-weight: 600;
+
+  small {
+    color: var(--text-secondary);
+    font-weight: 400;
+  }
+}
+
+.admin-layout__activo {
+  background: color-mix(in srgb, var(--brand-color) 12%, var(--bg-color));
+}
+
+.admin-layout__pie {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: auto;
+  padding: 16px;
+}
+
+.admin-layout__barra {
+  @include mat.toolbar-overrides(
+    (
+      container-background-color: var(--bg-color),
+      container-text-color: var(--text-primary),
+    )
+  );
+
+  border-bottom: 1px solid color-mix(in srgb, var(--text-secondary) 20%, transparent);
+}
+
+.admin-layout__contenido {
+  max-width: 960px;
+  padding: 24px;
+}

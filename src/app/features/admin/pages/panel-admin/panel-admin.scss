@@ -1,0 +1,29 @@
+.panel-admin__metricas {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin: 24px 0;
+
+  dt {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+  }
+
+  dd {
+    margin: 4px 0 0;
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+}
+
+.panel-admin__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+@media (max-width: 699px) {
+  .panel-admin__metricas {
+    grid-template-columns: 1fr;
+  }
+}

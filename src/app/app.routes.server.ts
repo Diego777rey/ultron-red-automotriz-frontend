@@ -10,7 +10,19 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Server,
   },
   {
-    path: 'vendedor/**',
+    path: 'admin/**',
+    renderMode: RenderMode.Server,
+  },
+  {
+    path: 'cuenta/**',
+    renderMode: RenderMode.Server,
+  },
+  {
+    path: 'carrito/**',
+    renderMode: RenderMode.Server,
+  },
+  {
+    path: 'checkout/**',
     renderMode: RenderMode.Server,
   },
   {

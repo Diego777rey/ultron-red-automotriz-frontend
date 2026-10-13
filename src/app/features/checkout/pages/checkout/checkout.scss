@@ -1,0 +1,33 @@
+.checkout__formulario {
+  display: grid;
+  gap: 4px;
+  max-width: 480px;
+}
+
+.checkout__fila {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.checkout__aviso {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.checkout__mensaje {
+  padding: 12px;
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--brand-color) 12%, var(--bg-color));
+}
+
+.checkout__mensaje--error {
+  background: color-mix(in srgb, var(--brand-color) 18%, var(--bg-color));
+  color: var(--text-primary);
+}
+
+@media (max-width: 599px) {
+  .checkout__fila {
+    grid-template-columns: 1fr;
+  }
+}

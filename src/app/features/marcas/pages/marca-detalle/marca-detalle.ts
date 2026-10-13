@@ -4,6 +4,7 @@ import { MARCAS } from '../../data/marcas.data';
 import { ProductoCardComponent } from '../../../productos/components/producto-card/producto-card';
 import { ProductosFiltrosComponent } from '../../../productos/components/productos-filtros/productos-filtros';
 import { ProductoDiagrama } from '../../../productos/models/producto.model';
+import { CarritoService } from '../../../carrito/services/carrito.service';
 import { ProductosService } from '../../../productos/services/productos.service';
 
 /**
@@ -65,12 +66,11 @@ import { ProductosService } from '../../../productos/services/productos.service'
           </p>
         }
         @if (confirmacion(); as confirmacion) {
-          <p class="marca-detalle__confirmacion" role="status">{{ confirmacion }}</p>
+          <p class="marca-detalle__confirmacion" role="status">
+            {{ confirmacion }}
+            <a routerLink="/carrito">Ver carrito</a>
+          </p>
         }
-        <p class="marca-detalle__vendedor">
-          ¿Vendés diagramas?
-          <a routerLink="/vendedor">Cargalos en el panel del vendedor</a> y aparecen acá enseguida.
-        </p>
       } @else {
         <h1>Marca no encontrada</h1>
         <p class="marca-detalle__vacio">
@@ -85,6 +85,7 @@ export class MarcaDetalleComponent {
   readonly slug = input.required<string>();
 
   private readonly productosService = inject(ProductosService);
+  private readonly carrito = inject(CarritoService);
 
   protected readonly marca = computed(() => MARCAS.find((marca) => marca.slug === this.slug()));
 
@@ -132,8 +133,7 @@ export class MarcaDetalleComponent {
   }
 
   protected alAgregar(producto: ProductoDiagrama): void {
-    this.confirmacion.set(
-      `Prototipo: “${producto.titulo}” se agregaría al carrito (todavía no hay carrito).`,
-    );
+    this.carrito.agregar(producto);
+    this.confirmacion.set(`“${producto.titulo}” se agregó al carrito.`);
   }
 }

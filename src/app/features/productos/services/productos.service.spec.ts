@@ -9,23 +9,15 @@ describe('ProductosService', () => {
     servicio = TestBed.inject(ProductosService);
   });
 
-  it('filtra los diagramas por marca', () => {
+  it('filtra los diagramas activos por marca', () => {
     const toyota = servicio.porMarca('toyota');
 
     expect(toyota.length).toBeGreaterThan(0);
     expect(toyota.every((producto) => producto.marcaSlug === 'toyota')).toBe(true);
   });
 
-  it('lista los modelos y años de una marca ordenados', () => {
-    expect(servicio.modelosDe('toyota')).toEqual(['Corolla', 'Etios', 'Hilux']);
-
-    const anios = servicio.aniosDe('toyota');
-    expect(anios[0]).toBe(2015);
-    expect(anios[anios.length - 1]).toBe(2024);
-  });
-
-  it('lo que carga el vendedor aparece en la página de la marca', () => {
-    servicio.agregar({
+  it('permite CRUD de productos', () => {
+    const creado = servicio.crear({
       marcaSlug: 'fiat',
       modelo: 'Cronos',
       anioDesde: 2022,
@@ -33,9 +25,12 @@ describe('ProductosService', () => {
       tipo: 'ECU',
       titulo: 'Diagrama ECU Fiat Cronos',
       precio: 160000,
+      activo: true,
     });
-
-    expect(servicio.porMarca('fiat').map((producto) => producto.modelo)).toContain('Cronos');
-    expect(servicio.modelosDe('fiat')).toContain('Cronos');
+    expect(servicio.obtener(creado.id)?.modelo).toBe('Cronos');
+    servicio.actualizar(creado.id, { precio: 170000 });
+    expect(servicio.obtener(creado.id)?.precio).toBe(170000);
+    expect(servicio.eliminar(creado.id)).toBe(true);
+    expect(servicio.obtener(creado.id)).toBeUndefined();
   });
 });

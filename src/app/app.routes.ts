@@ -15,11 +15,27 @@ export const routes: Routes = [
         loadChildren: () => import('./features/marcas/marcas.routes').then((m) => m.MARCAS_ROUTES),
       },
       {
+        path: 'carrito',
+        loadChildren: () => import('./features/carrito/carrito.routes').then((m) => m.CARRITO_ROUTES),
+      },
+      {
+        path: 'checkout',
+        loadChildren: () => import('./features/checkout/checkout.routes').then((m) => m.CHECKOUT_ROUTES),
+      },
+      {
+        path: 'cuenta',
+        loadChildren: () => import('./features/cuenta/cuenta.routes').then((m) => m.CUENTA_ROUTES),
+      },
+      {
         path: 'vendedor',
-        loadChildren: () =>
-          import('./features/vendedor/vendedor.routes').then((m) => m.VENDEDOR_ROUTES),
+        redirectTo: 'admin/acceso',
+        pathMatch: 'full',
       },
     ],
+  },
+  {
+    path: 'admin',
+    loadChildren: () => import('./features/admin/admin.routes').then((m) => m.ADMIN_ROUTES),
   },
   {
     path: '**',

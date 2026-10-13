@@ -1,0 +1,26 @@
+.carrito__lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.carrito__linea {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 16px 0;
+  border-bottom: 1px solid color-mix(in srgb, var(--text-secondary) 20%, transparent);
+}
+
+.carrito__acciones {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.carrito__total {
+  margin: 20px 0;
+  font-size: 1.1rem;
+}

@@ -23,6 +23,8 @@ export interface ProductoDiagrama {
   titulo: string;
   /** Precio en guaraníes. */
   precio: number;
+  /** Si es `false`, no se muestra en la tienda. */
+  activo?: boolean;
 }
 
 /** Datos que carga el vendedor en el prototipo (sin id, lo genera el servicio). */

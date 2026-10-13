@@ -1,21 +1,27 @@
-import { Injectable, computed, signal } from '@angular/core';
-import { PRODUCTOS_INICIALES } from '../data/productos.data';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { ProductoDiagrama, ProductoNuevo } from '../models/producto.model';
+import { ProductosRepository } from '../repository/productos.repository';
 
-/**
- * Catálogo en memoria del prototipo: lo que carga el vendedor aparece
- * enseguida en la página de la marca. Cuando exista backend, este
- * servicio va a pedir y guardar los diagramas ahí.
- */
+function nuevoId(): string {
+  return `prod-${Date.now().toString(36)}-${Math.floor(Math.random() * 1e6).toString(36)}`;
+}
+
 @Injectable({ providedIn: 'root' })
 export class ProductosService {
-  private readonly productos = signal<readonly ProductoDiagrama[]>(PRODUCTOS_INICIALES);
+  private readonly repository = inject(ProductosRepository);
+
+  private readonly productos = signal<readonly ProductoDiagrama[]>(this.repository.listar());
 
   readonly todos = this.productos.asReadonly();
   readonly total = computed(() => this.productos().length);
 
+  /** Catálogo público: solo productos activos. */
   porMarca(marcaSlug: string): readonly ProductoDiagrama[] {
-    return this.productos().filter((producto) => producto.marcaSlug === marcaSlug);
+    return this.productos().filter((producto) => producto.marcaSlug === marcaSlug && producto.activo !== false);
+  }
+
+  obtener(id: string): ProductoDiagrama | undefined {
+    return this.productos().find((producto) => producto.id === id);
   }
 
   modelosDe(marcaSlug: string): readonly string[] {
@@ -30,12 +36,37 @@ export class ProductosService {
     return [...new Set(anios)].sort((a, b) => a - b);
   }
 
-  agregar(nuevo: ProductoNuevo): ProductoDiagrama {
+  crear(nuevo: ProductoNuevo): ProductoDiagrama {
     const producto: ProductoDiagrama = {
       ...nuevo,
-      id: `prod-${Date.now().toString(36)}-${Math.floor(Math.random() * 1e6).toString(36)}`,
+      id: nuevoId(),
+      activo: nuevo.activo ?? true,
     };
-    this.productos.update((actuales) => [...actuales, producto]);
+    this.persistir([...this.productos(), producto]);
     return producto;
+  }
+
+  actualizar(id: string, cambios: Partial<ProductoNuevo>): ProductoDiagrama | null {
+    const actual = this.obtener(id);
+    if (!actual) {
+      return null;
+    }
+    const actualizado: ProductoDiagrama = { ...actual, ...cambios, id: actual.id };
+    this.persistir(this.productos().map((p) => (p.id === id ? actualizado : p)));
+    return actualizado;
+  }
+
+  eliminar(id: string): boolean {
+    const existe = this.obtener(id);
+    if (!existe) {
+      return false;
+    }
+    this.persistir(this.productos().filter((p) => p.id !== id));
+    return true;
+  }
+
+  private persistir(productos: readonly ProductoDiagrama[]): void {
+    this.productos.set(productos);
+    this.repository.guardarTodos(productos);
   }
 }

@@ -41,6 +41,7 @@ export const COLUMNAS_FOOTER: readonly ColumnaFooter[] = [
       { etiqueta: 'Preguntas frecuentes', ruta: '/preguntas-frecuentes' },
       { etiqueta: 'Acerca de', ruta: '/acerca-de' },
       { etiqueta: 'Atención al cliente', ruta: '/atencion-al-cliente' },
+      { etiqueta: 'Administración de la tienda', ruta: '/admin/acceso' },
       { etiqueta: 'Sucursales', ruta: '/sucursales' },
     ],
   },
@@ -48,7 +49,7 @@ export const COLUMNAS_FOOTER: readonly ColumnaFooter[] = [
     titulo: 'Mi cuenta',
     enlaces: [
       { etiqueta: 'Mi carrito', ruta: '/carrito' },
-      { etiqueta: 'Mis pedidos', ruta: '/mis-pedidos' },
+      { etiqueta: 'Mis pedidos', ruta: '/cuenta' },
       { etiqueta: 'Mi perfil', ruta: '/cuenta' },
     ],
   },

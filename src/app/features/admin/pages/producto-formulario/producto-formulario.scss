@@ -1,0 +1,17 @@
+.producto-formulario__form {
+  display: grid;
+  gap: 4px;
+  max-width: 520px;
+}
+
+.producto-formulario__fila {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.producto-formulario__acciones {
+  display: flex;
+  gap: 12px;
+  margin-top: 12px;
+}

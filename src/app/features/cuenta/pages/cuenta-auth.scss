@@ -1,0 +1,27 @@
+.cuenta-auth {
+  max-width: 420px;
+  margin-inline: auto;
+}
+
+.cuenta-auth h1 {
+  margin: 0 0 8px;
+  font-size: 1.75rem;
+}
+
+.cuenta-auth__formulario {
+  display: grid;
+  gap: 4px;
+  margin: 20px 0;
+}
+
+.cuenta-auth__error {
+  margin: 0 0 8px;
+  color: var(--brand-color);
+  font-size: 0.9rem;
+}
+
+.cuenta-auth__admin {
+  margin-top: 24px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
