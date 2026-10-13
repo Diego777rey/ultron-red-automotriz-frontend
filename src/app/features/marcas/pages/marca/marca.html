@@ -1,0 +1,64 @@
+@if (marca(); as marca) {
+  <nav class="marca__migas" aria-label="Miga de pan">
+    <ol>
+      <li><a routerLink="/">Inicio</a></li>
+      <li aria-current="page">{{ marca.nombre }}</li>
+    </ol>
+  </nav>
+
+  <header class="marca__encabezado">
+    <h1>Diagramas {{ marca.nombre }}</h1>
+    <p>Elegí modelo y año para encontrar el diagrama eléctrico de tu vehículo.</p>
+  </header>
+
+  @if (productosDeMarca().length === 0) {
+    <p class="marca__vacio">Todavía no hay diagramas de {{ marca.nombre }}.</p>
+  } @else {
+    <form class="marca__filtros" aria-label="Filtrar diagramas" (submit)="$event.preventDefault()">
+      <div class="marca__campo">
+        <label for="filtro-modelo">Modelo</label>
+        <select id="filtro-modelo" [formField]="formularioFiltros.modelo">
+          <option value="">Todos los modelos</option>
+          @for (modelo of modelos(); track modelo) {
+            <option [value]="modelo">{{ modelo }}</option>
+          }
+        </select>
+      </div>
+      <div class="marca__campo">
+        <label for="filtro-anio">Año</label>
+        <select id="filtro-anio" [formField]="formularioFiltros.anio">
+          <option value="">Todos los años</option>
+          @for (anio of anios(); track anio) {
+            <option [value]="anio">{{ anio }}</option>
+          }
+        </select>
+      </div>
+      @if (hayFiltros()) {
+        <button matButton="outlined" type="button" (click)="limpiarFiltros()">
+          Limpiar filtros
+        </button>
+      }
+    </form>
+
+    <p class="marca__resumen" aria-live="polite">{{ resumen() }}</p>
+
+    @if (filtrados().length === 0) {
+      <p class="marca__vacio">Ningún diagrama coincide con ese modelo y año.</p>
+    } @else {
+      <ul class="marca__grilla">
+        @for (producto of filtrados(); track producto.id) {
+          <li>
+            <app-producto-card [producto]="producto" />
+          </li>
+        }
+      </ul>
+    }
+  }
+} @else {
+  <h1>No encontramos esa marca</h1>
+  <p class="marca__vacio">
+    Esa marca no está en el catálogo.
+    <a routerLink="/">Volvé al inicio</a>
+    para elegir otra.
+  </p>
+}

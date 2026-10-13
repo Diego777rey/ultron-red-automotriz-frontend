@@ -29,4 +29,15 @@ describe('App', () => {
     expect(elemento.querySelectorAll('app-marca-card').length).toBeGreaterThan(0);
     expect(document.querySelector('app-footer footer')).not.toBeNull();
   });
+
+  it('al elegir una marca abre su catálogo de diagramas', async () => {
+    const harness = await RouterTestingHarness.create('/');
+    const toyota = document.querySelector<HTMLAnchorElement>('a[href="/marcas/toyota"]')!;
+    expect(toyota).not.toBeNull();
+
+    await harness.navigateByUrl('/marcas/toyota');
+    const catalogo = harness.routeNativeElement as HTMLElement;
+    expect(catalogo.querySelector('h1')?.textContent).toBe('Diagramas Toyota');
+    expect(catalogo.querySelectorAll('app-producto-card').length).toBeGreaterThan(0);
+  });
 });

@@ -43,12 +43,22 @@ src/app/
     ├── inicio/
     │   ├── inicio.routes.ts
     │   └── pages/inicio/          # título + grilla de marcas
-    └── marcas/
-        ├── models/marca.model.ts
-        ├── data/marcas.data.ts    # lista de marcas que se muestran
-        └── components/
-            ├── marca-card/        # tarjeta: logo + franja con el nombre
-            └── marcas-grid/       # grilla de tarjetas
+    ├── marcas/
+    │   ├── marcas.routes.ts       # /marcas/:slug
+    │   ├── models/marca.model.ts
+    │   ├── data/marcas.data.ts    # lista de marcas que se muestran
+    │   ├── pages/marca/           # catálogo de diagramas de una marca
+    │   └── components/
+    │       ├── marca-card/        # tarjeta: logo + franja con el nombre
+    │       └── marcas-grid/       # grilla de tarjetas
+    ├── productos/
+    │   ├── models/producto.model.ts
+    │   ├── data/                  # prototipo de diagramas y tipos
+    │   ├── services/productos.service.ts  # catálogo en memoria (comprador y vendedor)
+    │   └── components/producto-card/
+    └── vendedor/
+        ├── vendedor.routes.ts     # /vendedor/productos
+        └── pages/productos/       # prototipo para cargar diagramas
 
 public/marcas/         # logos de las marcas (<slug>.webp)
 ```
@@ -59,13 +69,13 @@ Cada feature expone un `*.routes.ts` (`INICIO_ROUTES`, …) y se registra en `ap
 
 Copia el estilo del menú de referencia (barra roja `#EA1414`, marca en Poppins seminegrita a la izquierda e iconos a la derecha) con estos cambios:
 
-| Referencia | Red Automotriz |
-|------------|----------------|
-| Marca "Trébol." | "Red Automotriz." (enlace al inicio) |
-| Lupa del centro | Se quitó |
-| Icono de ubicación | Lupa |
-| Corazón | Carrito, con el contador de productos |
-| Carrito | Usuario |
+| Referencia         | Red Automotriz                        |
+| ------------------ | ------------------------------------- |
+| Marca "Trébol."    | "Red Automotriz." (enlace al inicio)  |
+| Lupa del centro    | Se quitó                              |
+| Icono de ubicación | Lupa                                  |
+| Corazón            | Carrito, con el contador de productos |
+| Carrito            | Usuario                               |
 
 Los iconos de la derecha están un poco más separados que en la referencia (12 px entre botones; 4 px en móvil).
 
@@ -81,7 +91,9 @@ Material: `mat-toolbar`, `mat-icon-button` y `mat-icon` (fuente `material-icons`
 
 ## Marcas (`features/marcas`)
 
-El inicio muestra el título "Diagramas eléctricos automotrices por marca" y una grilla con una tarjeta por marca: el logo arriba y una franja roja con el nombre abajo. Toda la tarjeta es un enlace a `/marcas/<slug>`; esa página todavía no existe, así que por ahora el comodín `**` lleva al inicio.
+El inicio muestra el título "Diagramas eléctricos automotrices por marca" y una grilla con una tarjeta por marca: el logo arriba y una franja roja con el nombre abajo. Toda la tarjeta es un enlace a `/marcas/<slug>`. Esa página lista los diagramas de la marca en tarjetas con el precio en guaraníes y permite filtrar por modelo y año para encontrar el artículo exacto.
+
+Hay un prototipo del panel del vendedor en `/vendedor/productos` (enlace "Panel del vendedor" en el pie): el formulario carga un diagrama al catálogo en memoria y se ve en la marca correspondiente. Cuando exista backend, el servicio `ProductosService` se reemplaza por la API.
 
 - La grilla tiene 4 columnas en escritorio, 3 debajo de 1024 px y 2 debajo de 600 px.
 - El logo es decorativo (`alt=""`): el nombre accesible del enlace es el nombre de la marca.
@@ -121,7 +133,7 @@ Dónde se cambia cada cosa:
 
 - Teléfono y redes sociales: `src/app/config/sitio.config.ts`. **Los valores actuales son provisorios** (`+595 21 000 000` y las portadas de cada red); hay que reemplazarlos por los reales.
 - Columnas, enlaces legales y métodos de pago: `shared/components/footer/footer-contenido.ts`.
-- Las rutas de esos enlaces todavía no tienen página: el comodín `**` de `app.routes.ts` las manda al inicio hasta que se cree cada feature.
+- Las rutas de esos enlaces todavía no tienen página, salvo `/marcas/<slug>` y `/vendedor/productos`: el comodín `**` de `app.routes.ts` manda el resto al inicio hasta que se cree cada feature.
 
 Los logos de redes y tarjetas no existen en Material Icons. Salen de `@fortawesome/free-brands-svg-icons` (licencia CC BY 4.0) y se dibujan con `app-svg-icon` (`shared/components/svg-icon`), que solo agrega al bundle los logos importados.
 

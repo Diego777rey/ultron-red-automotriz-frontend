@@ -1,0 +1,137 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+  max-width: 1000px;
+  margin-inline: auto;
+}
+
+.marca__migas ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 24px;
+  padding: 0;
+  list-style: none;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.marca__migas li:not(:last-child)::after {
+  content: '/';
+  margin-left: 8px;
+  color: var(--text-secondary);
+}
+
+.marca__migas a {
+  color: var(--text-primary);
+
+  &:focus-visible {
+    outline: 2px solid var(--brand-color);
+    outline-offset: 2px;
+  }
+}
+
+.marca__encabezado {
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 2rem;
+  font-weight: 600;
+}
+
+.marca__encabezado p {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.marca__filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 16px;
+  margin-bottom: 16px;
+
+  @include mat.button-overrides(
+    (
+      outlined-label-text-color: var(--text-primary),
+      outlined-outline-color: var(--border-color),
+    )
+  );
+}
+
+.marca__campo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 180px;
+  flex: 1;
+}
+
+label {
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+select {
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  background: var(--bg-color);
+  color: var(--text-primary);
+  font: inherit;
+
+  &:focus-visible {
+    outline: 2px solid var(--brand-color);
+    outline-offset: 2px;
+  }
+}
+
+.marca__resumen {
+  margin: 0 0 16px;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+.marca__vacio {
+  margin: 0;
+  color: var(--text-secondary);
+}
+
+.marca__vacio a {
+  color: var(--text-primary);
+
+  &:focus-visible {
+    outline: 2px solid var(--brand-color);
+    outline-offset: 2px;
+  }
+}
+
+.marca__grilla {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (max-width: 1023px) {
+  .marca__grilla {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 599px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+
+  .marca__grilla {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}

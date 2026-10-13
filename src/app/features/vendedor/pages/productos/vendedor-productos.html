@@ -1,0 +1,145 @@
+<nav class="vendedor__migas" aria-label="Miga de pan">
+  <ol>
+    <li><a routerLink="/">Inicio</a></li>
+    <li aria-current="page">Panel del vendedor</li>
+  </ol>
+</nav>
+
+<header class="vendedor__encabezado">
+  <h1>Cargar diagramas</h1>
+  <p>
+    Prototipo del panel del vendedor. Los diagramas que cargues aparecen en el catálogo de la marca.
+    Se guardan en esta sesión hasta recargar la página.
+  </p>
+</header>
+
+@if (cargado(); as producto) {
+  <p class="vendedor__exito" role="status">
+    Se cargó «{{ producto.titulo }}».
+    @if (marcaCargada(); as marca) {
+      <a [routerLink]="['/marcas', marca.slug]">Ver en el catálogo de {{ marca.nombre }}</a>
+    }
+  </p>
+}
+
+<form class="vendedor__formulario" novalidate (submit)="cargar($event)">
+  <div class="vendedor__campo">
+    <label for="alta-marca">Marca</label>
+    <select id="alta-marca" [formField]="formulario.marcaSlug">
+      <option value="">Elegí una marca</option>
+      @for (marca of marcas; track marca.slug) {
+        <option [value]="marca.slug">{{ marca.nombre }}</option>
+      }
+    </select>
+    @for (error of erroresDe('marcaSlug'); track error) {
+      <span class="vendedor__error">{{ error }}</span>
+    }
+  </div>
+
+  <div class="vendedor__campo">
+    <label for="alta-modelo">Modelo</label>
+    <input id="alta-modelo" type="text" autocomplete="off" [formField]="formulario.modelo" />
+    @for (error of erroresDe('modelo'); track error) {
+      <span class="vendedor__error">{{ error }}</span>
+    }
+  </div>
+
+  <div class="vendedor__fila">
+    <div class="vendedor__campo">
+      <label for="alta-anio-desde">Año desde</label>
+      <input
+        id="alta-anio-desde"
+        type="number"
+        [attr.min]="anioMinimo"
+        [attr.max]="anioMaximo"
+        [formField]="formulario.anioDesde"
+      />
+      @for (error of erroresDe('anioDesde'); track error) {
+        <span class="vendedor__error">{{ error }}</span>
+      }
+    </div>
+    <div class="vendedor__campo">
+      <label for="alta-anio-hasta">Año hasta</label>
+      <input
+        id="alta-anio-hasta"
+        type="number"
+        [attr.min]="anioMinimo"
+        [attr.max]="anioMaximo"
+        [formField]="formulario.anioHasta"
+      />
+      @for (error of erroresDe('anioHasta'); track error) {
+        <span class="vendedor__error">{{ error }}</span>
+      }
+    </div>
+  </div>
+
+  <div class="vendedor__campo">
+    <label for="alta-tipo">Tipo de diagrama</label>
+    <select id="alta-tipo" [formField]="formulario.tipo">
+      <option value="">Elegí el tipo</option>
+      @for (tipo of tipos; track tipo.id) {
+        <option [value]="tipo.id">{{ tipo.etiqueta }}</option>
+      }
+    </select>
+    @for (error of erroresDe('tipo'); track error) {
+      <span class="vendedor__error">{{ error }}</span>
+    }
+  </div>
+
+  <div class="vendedor__campo">
+    <label for="alta-titulo">Título</label>
+    <input id="alta-titulo" type="text" autocomplete="off" [formField]="formulario.titulo" />
+    @for (error of erroresDe('titulo'); track error) {
+      <span class="vendedor__error">{{ error }}</span>
+    }
+  </div>
+
+  <div class="vendedor__campo">
+    <label for="alta-precio">Precio (Gs.)</label>
+    <input id="alta-precio" type="number" min="1" step="1" [formField]="formulario.precio" />
+    @for (error of erroresDe('precio'); track error) {
+      <span class="vendedor__error">{{ error }}</span>
+    }
+  </div>
+
+  <div class="vendedor__campo">
+    <label for="alta-descripcion">Descripción (opcional)</label>
+    <textarea id="alta-descripcion" rows="3" [formField]="formulario.descripcion"></textarea>
+  </div>
+
+  <button matButton="filled" type="submit">Cargar diagrama</button>
+</form>
+
+<section class="vendedor__catalogo" aria-labelledby="catalogo-vendedor">
+  <h2 id="catalogo-vendedor">Diagramas en el catálogo</h2>
+  <div class="vendedor__tabla-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th scope="col">Marca</th>
+          <th scope="col">Modelo</th>
+          <th scope="col">Años</th>
+          <th scope="col">Tipo</th>
+          <th scope="col">Título</th>
+          <th scope="col">Precio</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (producto of catalogo(); track producto.id) {
+          <tr>
+            <td>
+              <a [routerLink]="['/marcas', producto.marcaSlug]">{{
+                nombreMarca(producto.marcaSlug)
+              }}</a>
+            </td>
+            <td>{{ producto.modelo }}</td>
+            <td>{{ formatearAnios(producto.anioDesde, producto.anioHasta) }}</td>
+            <td>{{ etiquetaTipo(producto.tipo) }}</td>
+            <td>{{ producto.titulo }}</td>
+            <td>{{ formatearPrecio(producto.precio) }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>
