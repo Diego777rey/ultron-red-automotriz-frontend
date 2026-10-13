@@ -1,0 +1,11 @@
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+}
+
+.filtros__campo {
+  min-width: 180px;
+  flex: 1 1 180px;
+}
