@@ -8,6 +8,11 @@ export const routes: Routes = [
     children: [
       {
         path: '',
+        loadChildren: () =>
+          import('./features/productos/productos.routes').then((m) => m.PRODUCTOS_ROUTES),
+      },
+      {
+        path: '',
         loadChildren: () => import('./features/inicio/inicio.routes').then((m) => m.INICIO_ROUTES),
       },
     ],
