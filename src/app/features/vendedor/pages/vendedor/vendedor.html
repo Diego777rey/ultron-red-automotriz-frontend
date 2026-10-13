@@ -1,0 +1,171 @@
+<div class="vendedor">
+  <nav class="vendedor__migas" aria-label="Ruta de navegación">
+    <a routerLink="/">Inicio</a>
+    <span aria-hidden="true">/</span>
+    <span aria-current="page">Panel del vendedor</span>
+  </nav>
+
+  <header class="vendedor__cabecera">
+    <div>
+      <span class="vendedor__etiqueta">Prototipo de vendedor</span>
+      <h1>Cargar productos al catálogo</h1>
+      <p class="vendedor__subtitulo">
+        Publicá nuevos diagramas eléctricos indicando marca, modelo, año y valor para que aparezcan en la pantalla de la marca.
+      </p>
+    </div>
+
+    @if (marcaSeleccionada(); as marcaActual) {
+      <a
+        mat-stroked-button
+        [routerLink]="['/marcas', marcaActual.slug]"
+      >
+        <mat-icon aria-hidden="true">visibility</mat-icon>
+        Ver pantalla de {{ marcaActual.nombre }}
+      </a>
+    }
+  </header>
+
+  <div class="vendedor__layout">
+    <mat-card class="vendedor__panel-formulario">
+      <h2>Nuevo diagrama / artículo</h2>
+
+      @if (errorFormulario(); as mensajeError) {
+        <div class="vendedor__alerta vendedor__alerta--error" role="alert">
+          <mat-icon aria-hidden="true">error_outline</mat-icon>
+          <span>{{ mensajeError }}</span>
+        </div>
+      }
+
+      @if (ultimoPublicado(); as publicado) {
+        <div class="vendedor__alerta vendedor__alerta--exito" role="status" aria-live="polite">
+          <mat-icon aria-hidden="true">check_circle</mat-icon>
+          <div>
+            <strong>Artículo cargado:</strong> {{ publicado.titulo }} ({{ publicado.modelo }} · {{ publicado.anio }}).
+            <a [routerLink]="['/marcas', publicado.marcaSlug]">Ver en la marca</a>
+          </div>
+        </div>
+      }
+
+      <form class="vendedor__formulario" (submit)="guardarProducto($event)">
+        <div class="vendedor__fila-doble">
+          <div class="vendedor__campo">
+            <label for="vendedor-marca">Marca del vehículo</label>
+            <select id="vendedor-marca" [formField]="formularioProducto.marcaSlug">
+              @for (marca of marcas; track marca.slug) {
+                <option [value]="marca.slug">{{ marca.nombre }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="vendedor__campo">
+            <label for="vendedor-categoria">Categoría</label>
+            <select id="vendedor-categoria" [formField]="formularioProducto.categoria">
+              @for (cat of categorias; track cat) {
+                <option [value]="cat">{{ cat }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        <div class="vendedor__fila-doble">
+          <div class="vendedor__campo">
+            <label for="vendedor-modelo">Modelo</label>
+            <input
+              id="vendedor-modelo"
+              type="text"
+              placeholder="Ej. Hilux, Corolla, Ranger..."
+              [formField]="formularioProducto.modelo"
+            />
+          </div>
+
+          <div class="vendedor__campo">
+            <label for="vendedor-anio">Año</label>
+            <input
+              id="vendedor-anio"
+              type="number"
+              placeholder="Ej. 2022"
+              [formField]="formularioProducto.anio"
+            />
+          </div>
+        </div>
+
+        <div class="vendedor__fila-doble">
+          <div class="vendedor__campo">
+            <label for="vendedor-titulo">Título del artículo</label>
+            <input
+              id="vendedor-titulo"
+              type="text"
+              placeholder="Ej. Diagrama eléctrico ECU Motor 2.8"
+              [formField]="formularioProducto.titulo"
+            />
+          </div>
+
+          <div class="vendedor__campo">
+            <label for="vendedor-precio">Valor (Gs.)</label>
+            <input
+              id="vendedor-precio"
+              type="number"
+              step="5000"
+              placeholder="Ej. 150000"
+              [formField]="formularioProducto.precio"
+            />
+          </div>
+        </div>
+
+        <div class="vendedor__campo">
+          <label for="vendedor-descripcion">Descripción técnica</label>
+          <textarea
+            id="vendedor-descripcion"
+            rows="3"
+            placeholder="Detalle de conectores, módulo, sensores incluidos en el diagrama..."
+            [formField]="formularioProducto.descripcion"
+          ></textarea>
+        </div>
+
+        <div class="vendedor__acciones">
+          <button mat-flat-button type="submit">
+            <mat-icon aria-hidden="true">publish</mat-icon>
+            Cargar producto
+          </button>
+        </div>
+      </form>
+    </mat-card>
+
+    <section class="vendedor__panel-lista" aria-labelledby="titulo-productos-cargados">
+      <div class="vendedor__lista-encabezado">
+        <h2 id="titulo-productos-cargados">
+          Productos en {{ marcaSeleccionada()?.nombre }} ({{ productosDeMarca().length }})
+        </h2>
+      </div>
+
+      @if (productosDeMarca().length > 0) {
+        <ul class="vendedor__lista">
+          @for (item of productosDeMarca(); track item.id) {
+            <li class="vendedor__item">
+              <div class="vendedor__item-info">
+                <div class="vendedor__item-meta">
+                  <span class="vendedor__item-badge">{{ item.categoria }}</span>
+                  <span>{{ item.modelo }} · {{ item.anio }}</span>
+                </div>
+                <h3>{{ item.titulo }}</h3>
+                <p class="vendedor__item-precio">
+                  {{ item.moneda }} {{ item.precio | number: '1.0-0' }}
+                </p>
+              </div>
+              <button
+                mat-icon-button
+                type="button"
+                [attr.aria-label]="'Eliminar ' + item.titulo"
+                (click)="eliminarProducto(item.id)"
+              >
+                <mat-icon>delete_outline</mat-icon>
+              </button>
+            </li>
+          }
+        </ul>
+      } @else {
+        <p class="vendedor__vacio">No hay productos cargados para esta marca.</p>
+      }
+    </section>
+  </div>
+</div>

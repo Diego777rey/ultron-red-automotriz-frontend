@@ -1,0 +1,94 @@
+@use '@angular/material' as mat;
+
+:host {
+  display: block;
+  height: 100%;
+}
+
+.diagrama-card {
+  @include mat.card-overrides(
+    (
+      elevated-container-color: var(--bg-color),
+      elevated-container-shape: 12px,
+    )
+  );
+  @include mat.button-overrides(
+    (
+      filled-container-color: var(--brand-color),
+      filled-label-text-color: var(--on-brand-color),
+    )
+  );
+
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 20px;
+  border: 1px solid var(--border-color);
+}
+
+.diagrama-card__encabezado {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.diagrama-card__categoria {
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: var(--brand-color);
+  color: var(--on-brand-color);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.diagrama-card__vehiculo {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.diagrama-card__titulo {
+  margin: 0 0 8px;
+  color: var(--text-primary);
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.diagrama-card__descripcion {
+  flex: 1;
+  margin: 0 0 20px;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.diagrama-card__pie {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+}
+
+.diagrama-card__precio-bloque {
+  display: flex;
+  flex-direction: column;
+}
+
+.diagrama-card__etiqueta-precio {
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+}
+
+.diagrama-card__precio {
+  color: var(--text-primary);
+  font-size: 1.2rem;
+  font-weight: 600;
+}
