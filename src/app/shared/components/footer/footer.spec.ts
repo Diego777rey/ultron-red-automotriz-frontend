@@ -52,7 +52,7 @@ describe('FooterComponent', () => {
       const titulo = nav.querySelector('h2')!;
       expect(nav.getAttribute('aria-labelledby')).toBe(titulo.id);
     }
-    expect(columnas[0].querySelector('a')?.getAttribute('href')).toBe('/diagramas/ecu');
+    expect(columnas[0].querySelector('a')?.getAttribute('href')).toBe('/');
   });
 
   it('lista los enlaces legales y los métodos de pago con nombre accesible', () => {

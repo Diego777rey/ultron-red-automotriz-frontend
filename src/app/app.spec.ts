@@ -1,3 +1,5 @@
+import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClientTesting } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
@@ -7,7 +9,7 @@ import { routes } from './app.routes';
 describe('App', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [provideRouter(routes)],
+      providers: [provideRouter(routes), provideHttpClient(), provideHttpClientTesting()],
     });
   });
 
@@ -23,10 +25,8 @@ describe('App', () => {
     expect(document.querySelector('app-header .header__marca')?.textContent?.trim()).toBe(
       'Red Automotriz.',
     );
-    expect(elemento.querySelector('h1')?.textContent).toBe(
-      'Diagramas eléctricos automotrices por marca',
-    );
-    expect(elemento.querySelectorAll('app-marca-card').length).toBeGreaterThan(0);
+    expect(elemento.querySelector('.inicio__marca')?.textContent?.trim()).toBe('Red Automotriz');
+    expect(elemento.querySelector('#catalogo')).not.toBeNull();
     expect(document.querySelector('app-footer footer')).not.toBeNull();
   });
 });

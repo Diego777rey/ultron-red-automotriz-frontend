@@ -1,0 +1,46 @@
+.checkout {
+  max-width: 560px;
+  margin-inline: auto;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 2rem;
+}
+
+h2 {
+  margin: 16px 0 4px;
+  font-size: 1.15rem;
+}
+
+.checkout__formulario {
+  display: grid;
+  gap: 4px;
+}
+
+.checkout__fila {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.checkout__aviso {
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.checkout__mensaje {
+  padding: 12px;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--brand-color) 12%, var(--bg-color));
+}
+
+.checkout__mensaje--error {
+  background: color-mix(in srgb, var(--brand-color) 18%, var(--bg-color));
+}
+
+@media (max-width: 599px) {
+  .checkout__fila {
+    grid-template-columns: 1fr;
+  }
+}
