@@ -20,37 +20,41 @@ describe('ProductosService', () => {
     http.verify();
   });
 
+  function responderCarga(productos: unknown[], categorias: unknown[] = []): void {
+    const requests = http.match(API_CONFIG.graphqlEndpoint);
+    expect(requests.length).toBe(2);
+    const productosReq = requests.find((req) =>
+      String(req.request.body.query).includes('catalogoWebProductos'),
+    );
+    const categoriasReq = requests.find((req) =>
+      String(req.request.body.query).includes('catalogoWebCategorias'),
+    );
+    expect(productosReq).toBeTruthy();
+    expect(categoriasReq).toBeTruthy();
+    productosReq!.flush({ data: { catalogoWebProductos: productos } });
+    categoriasReq!.flush({ data: { catalogoWebCategorias: categorias } });
+  }
+
   it('carga el catálogo web desde GraphQL', () => {
     servicio.cargar({ forzar: true });
 
-    const req = http.expectOne(API_CONFIG.graphqlEndpoint);
-    expect(req.request.method).toBe('POST');
-    expect(req.request.body.query).toContain('catalogoWebProductos');
-
-    req.flush({
-      data: {
-        catalogoWebProductos: [
-          {
-            id_producto: 1,
-            codigo: 'P-1',
-            nombre: 'Filtro de aceite',
-            descripcion: 'Uso general',
-            precioVenta: 45000,
-            imagen: 'productos/filtro.jpg',
-            tipoIva: '10',
-            categoriaProducto: {
-              id_categoria_producto: 2,
-              nombre: 'Filtros',
-              categoriaPadre: null,
-            },
-            presentaciones: [],
-          },
-        ],
+    responderCarga([
+      {
+        id_producto: 1,
+        codigo: 'P-1',
+        nombre: 'Filtro de aceite',
+        descripcion: 'Uso general',
+        precioVenta: 45000,
+        imagen: 'productos/filtro.jpg',
+        tipoIva: '10',
+        categoriaProducto: {
+          id_categoria_producto: 2,
+          nombre: 'Filtros',
+          categoriaPadre: null,
+        },
+        presentaciones: [],
       },
-    });
-
-    const categorias = http.expectOne(API_CONFIG.graphqlEndpoint);
-    categorias.flush({ data: { catalogoWebCategorias: [] } });
+    ]);
 
     expect(servicio.todos().length).toBe(1);
     expect(servicio.todos()[0].nombre).toBe('Filtro de aceite');
@@ -59,36 +63,30 @@ describe('ProductosService', () => {
 
   it('filtra por texto de búsqueda', () => {
     servicio.cargar({ forzar: true });
-    const req = http.expectOne(API_CONFIG.graphqlEndpoint);
-    req.flush({
-      data: {
-        catalogoWebProductos: [
-          {
-            id_producto: 1,
-            codigo: 'A',
-            nombre: 'Bujía',
-            descripcion: '',
-            precioVenta: 10000,
-            imagen: 'a.jpg',
-            tipoIva: null,
-            categoriaProducto: null,
-            presentaciones: [],
-          },
-          {
-            id_producto: 2,
-            codigo: 'B',
-            nombre: 'Aceite',
-            descripcion: '',
-            precioVenta: 20000,
-            imagen: 'b.jpg',
-            tipoIva: null,
-            categoriaProducto: null,
-            presentaciones: [],
-          },
-        ],
+    responderCarga([
+      {
+        id_producto: 1,
+        codigo: 'A',
+        nombre: 'Bujía',
+        descripcion: '',
+        precioVenta: 10000,
+        imagen: 'a.jpg',
+        tipoIva: null,
+        categoriaProducto: null,
+        presentaciones: [],
       },
-    });
-    http.expectOne(API_CONFIG.graphqlEndpoint).flush({ data: { catalogoWebCategorias: [] } });
+      {
+        id_producto: 2,
+        codigo: 'B',
+        nombre: 'Aceite',
+        descripcion: '',
+        precioVenta: 20000,
+        imagen: 'b.jpg',
+        tipoIva: null,
+        categoriaProducto: null,
+        presentaciones: [],
+      },
+    ]);
 
     servicio.setBusqueda('aceite');
     expect(servicio.filtrados().map((p) => p.nombre)).toEqual(['Aceite']);
