@@ -66,7 +66,9 @@ import { ProductosService } from '../../../productos/services/productos.service'
         }
       </section>
 
-      <app-newsletter />
+      <div id="newsletter">
+        <app-newsletter />
+      </div>
     </div>
   `,
   styleUrl: './inicio.scss',

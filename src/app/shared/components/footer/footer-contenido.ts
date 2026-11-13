@@ -16,38 +16,27 @@ export const COLUMNAS_FOOTER: readonly ColumnaFooter[] = [
       { etiqueta: 'Inicio', ruta: '/' },
       { etiqueta: 'Productos', ruta: '/productos' },
       { etiqueta: 'Carrito', ruta: '/carrito' },
-      { etiqueta: 'Checkout', ruta: '/checkout' },
+      { etiqueta: 'Pagar', ruta: '/checkout' },
     ],
   },
   {
     titulo: 'Compra',
     enlaces: [
-      { etiqueta: 'Catálogo', ruta: '/' },
-      { etiqueta: 'Mi carrito', ruta: '/carrito' },
-      { etiqueta: 'Pagar', ruta: '/checkout' },
-    ],
-  },
-  {
-    titulo: 'Info',
-    enlaces: [
-      { etiqueta: 'Preguntas frecuentes', ruta: '/preguntas-frecuentes' },
-      { etiqueta: 'Acerca de', ruta: '/acerca-de' },
-      { etiqueta: 'Atención al cliente', ruta: '/atencion-al-cliente' },
-      { etiqueta: 'Sucursales', ruta: '/sucursales' },
-    ],
-  },
-  {
-    titulo: 'Mi cuenta',
-    enlaces: [
+      { etiqueta: 'Catálogo', ruta: '/productos' },
       { etiqueta: 'Mi carrito', ruta: '/carrito' },
       { etiqueta: 'Checkout', ruta: '/checkout' },
+    ],
+  },
+  {
+    titulo: 'Ayuda',
+    enlaces: [
+      { etiqueta: 'Métodos de pago', ruta: '/metodos-de-pago' },
+      { etiqueta: 'Suscripción a ofertas', ruta: '/' },
     ],
   },
 ];
 
 export const ENLACES_LEGALES: readonly EnlaceFooter[] = [
-  { etiqueta: 'Términos y condiciones', ruta: '/terminos-y-condiciones' },
-  { etiqueta: 'Política de privacidad', ruta: '/politica-de-privacidad' },
   { etiqueta: 'Métodos de pago', ruta: '/metodos-de-pago' },
 ];
 

@@ -29,11 +29,20 @@ describe('CarritoService', () => {
     servicio.agregar(PRODUCTO, { cantidad: 2 });
     expect(servicio.cantidadTotal()).toBe(3);
     expect(servicio.subtotal()).toBe(360000);
+    expect(servicio.panelAbierto()).toBe(true);
   });
 
   it('quita una línea', () => {
-    servicio.agregar(PRODUCTO);
+    servicio.agregar(PRODUCTO, { abrirPanel: false });
     servicio.quitar(PRODUCTO.id);
     expect(servicio.vacio()).toBe(true);
+  });
+
+  it('abre y cierra el panel del carrito', () => {
+    expect(servicio.panelAbierto()).toBe(false);
+    servicio.abrirPanel();
+    expect(servicio.panelAbierto()).toBe(true);
+    servicio.cerrarPanel();
+    expect(servicio.panelAbierto()).toBe(false);
   });
 });

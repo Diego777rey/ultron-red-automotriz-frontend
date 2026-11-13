@@ -11,8 +11,10 @@ const CLAVE_CARRITO = 'ra-carrito-v1';
 export class CarritoService {
   private readonly almacen = inject(AlmacenLocalService);
   private readonly lineas = signal<readonly LineaCarrito[]>(this.cargar());
+  private readonly panel = signal(false);
 
   readonly items = this.lineas.asReadonly();
+  readonly panelAbierto = this.panel.asReadonly();
   readonly cantidadTotal = computed(() =>
     this.lineas().reduce((total, linea) => total + linea.cantidad, 0),
   );
@@ -21,9 +23,21 @@ export class CarritoService {
   );
   readonly vacio = computed(() => this.lineas().length === 0);
 
+  abrirPanel(): void {
+    this.panel.set(true);
+  }
+
+  cerrarPanel(): void {
+    this.panel.set(false);
+  }
+
   agregar(
     producto: ProductoCatalogo,
-    opciones?: { presentacion?: PresentacionCatalogo | null; cantidad?: number },
+    opciones?: {
+      presentacion?: PresentacionCatalogo | null;
+      cantidad?: number;
+      abrirPanel?: boolean;
+    },
   ): void {
     const presentacion = opciones?.presentacion ?? null;
     const cantidad = Math.max(1, opciones?.cantidad ?? 1);
@@ -55,6 +69,9 @@ export class CarritoService {
       ];
     }
     this.persistir(siguientes);
+    if (opciones?.abrirPanel !== false) {
+      this.abrirPanel();
+    }
   }
 
   quitar(productoId: number, presentacionId?: number | null): void {

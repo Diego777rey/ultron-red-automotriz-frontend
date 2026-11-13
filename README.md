@@ -42,7 +42,7 @@ Rutas principales: `/`, `/productos`, `/productos/:id`, `/carrito`, `/checkout`,
 
 ## Menú superior (`shared/components/header`)
 
-Barra roja `#EA1414`, marca a la izquierda; búsqueda, carrito y usuario a la derecha. La búsqueda se abre en el medio de la barra (nunca debajo). Al enviar, navega a `/productos?q=...`. El carrito muestra la cantidad y abre `/carrito`.
+Barra roja `#EA1414`, marca a la izquierda; búsqueda, carrito y usuario a la derecha. La búsqueda se abre en el medio de la barra (nunca debajo). Al enviar, navega a `/productos?q=...`. El carrito abre el panel lateral; desde ahí se puede ir a `/carrito` o `/checkout`. El icono de cuenta lleva al bloque de newsletter del inicio.
 
 ## Catálogo y carrito
 

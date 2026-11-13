@@ -29,6 +29,10 @@ export const routes: Routes = [
         loadChildren: () => import('./features/pedido/pedido.routes').then((m) => m.PEDIDO_ROUTES),
       },
       {
+        path: 'metodos-de-pago',
+        loadChildren: () => import('./features/info/info.routes').then((m) => m.INFO_ROUTES),
+      },
+      {
         path: 'marcas',
         redirectTo: 'productos',
         pathMatch: 'prefix',

@@ -80,6 +80,36 @@ h1 {
   max-width: 360px;
 }
 
+.detalle__cantidad {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin: 8px 0 4px;
+
+  button {
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background: var(--surface-color);
+    color: var(--text-primary);
+    font: inherit;
+    cursor: pointer;
+
+    &:hover,
+    &:focus-visible {
+      border-color: var(--brand-color);
+      outline: none;
+    }
+  }
+
+  span {
+    min-width: 1.5rem;
+    text-align: center;
+    font-weight: 600;
+  }
+}
+
 .detalle__acciones {
   display: flex;
   flex-wrap: wrap;

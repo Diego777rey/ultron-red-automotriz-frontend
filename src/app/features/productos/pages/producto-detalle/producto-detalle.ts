@@ -77,6 +77,16 @@ type EstadoProducto =
               </mat-form-field>
             }
 
+            <div class="detalle__cantidad" role="group" aria-label="Cantidad">
+              <button type="button" (click)="bajarCantidad()" aria-label="Disminuir cantidad">
+                −
+              </button>
+              <span aria-live="polite">{{ cantidad() }}</span>
+              <button type="button" (click)="subirCantidad()" aria-label="Aumentar cantidad">
+                +
+              </button>
+            </div>
+
             <div class="detalle__acciones">
               <button matButton="filled" type="button" (click)="agregar(producto)">
                 Agregar al carrito
@@ -123,6 +133,7 @@ export class ProductoDetalleComponent {
   );
 
   protected readonly presentacionId = signal<number | null>(null);
+  protected readonly cantidad = signal(1);
   protected readonly confirmacion = signal<string | null>(null);
 
   protected readonly precioFormateado = computed(() => {
@@ -137,13 +148,24 @@ export class ProductoDetalleComponent {
     return formatearGs(monto);
   }
 
+  protected bajarCantidad(): void {
+    this.cantidad.update((valor) => Math.max(1, valor - 1));
+  }
+
+  protected subirCantidad(): void {
+    this.cantidad.update((valor) => valor + 1);
+  }
+
   protected agregar(producto: ProductoCatalogo): void {
     const presentacionId = this.presentacionId();
     const presentacion =
       presentacionId == null
         ? null
         : (producto.presentaciones.find((p) => p.id === presentacionId) ?? null);
-    this.carrito.agregar(producto, { presentacion });
+    this.carrito.agregar(producto, {
+      presentacion,
+      cantidad: this.cantidad(),
+    });
     this.confirmacion.set(`“${producto.nombre}” se agregó al carrito.`);
   }
 }
