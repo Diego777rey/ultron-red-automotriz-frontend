@@ -1,0 +1,131 @@
+.inicio {
+  max-width: none;
+  margin: 0;
+  padding-top: 0 !important;
+  padding-inline: 0 !important;
+}
+
+.inicio__hero {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-bottom: 40px;
+  padding: clamp(56px, 9vw, 104px) max(28px, calc((100vw - 1100px) / 2));
+  color: var(--on-brand-color);
+  background:
+    linear-gradient(
+      120deg,
+      color-mix(in srgb, var(--brand-color) 92%, #000) 0%,
+      var(--brand-color) 48%,
+      color-mix(in srgb, var(--brand-color) 70%, #3a0a0a) 100%
+    ),
+    radial-gradient(circle at 85% 20%, rgba(255, 255, 255, 0.18), transparent 45%);
+  overflow: hidden;
+}
+
+.inicio__catalogo,
+#newsletter {
+  max-width: 1100px;
+  margin-inline: auto;
+  padding-inline: 28px;
+}
+
+.inicio__marca {
+  margin: 0 0 12px;
+  font-size: clamp(1.75rem, 4vw, 2.6rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.inicio__hero h1 {
+  margin: 0 0 12px;
+  max-width: 16ch;
+  font-size: clamp(1.35rem, 3vw, 2rem);
+  font-weight: 600;
+  line-height: 1.25;
+}
+
+.inicio__bajada {
+  margin: 0 0 24px;
+  max-width: 38ch;
+  color: var(--on-brand-muted);
+  font-size: 1.05rem;
+}
+
+.inicio__cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.inicio__catalogo-cabecera {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+
+  h2 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+
+  a {
+    color: var(--brand-color);
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      text-decoration: underline;
+      outline: none;
+    }
+  }
+}
+
+.inicio__grilla {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 20px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.inicio__estado {
+  color: var(--text-secondary);
+}
+
+.inicio__estado--error,
+.inicio__confirmacion {
+  color: var(--text-primary);
+}
+
+.inicio__confirmacion {
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--brand-color) 10%, var(--bg-color));
+}
+
+@media (max-width: 1023px) {
+  .inicio__grilla {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 699px) {
+  .inicio__hero {
+    padding-inline: 16px;
+  }
+
+  .inicio__catalogo,
+  #newsletter {
+    padding-inline: 16px;
+  }
+
+  .inicio__grilla {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+}

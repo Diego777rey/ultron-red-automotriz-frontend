@@ -11,13 +11,36 @@ export const routes: Routes = [
         loadChildren: () => import('./features/inicio/inicio.routes').then((m) => m.INICIO_ROUTES),
       },
       {
+        path: 'productos',
+        loadChildren: () =>
+          import('./features/productos/productos.routes').then((m) => m.PRODUCTOS_ROUTES),
+      },
+      {
+        path: 'carrito',
+        loadChildren: () => import('./features/carrito/carrito.routes').then((m) => m.CARRITO_ROUTES),
+      },
+      {
+        path: 'checkout',
+        loadChildren: () =>
+          import('./features/checkout/checkout.routes').then((m) => m.CHECKOUT_ROUTES),
+      },
+      {
+        path: 'pedido',
+        loadChildren: () => import('./features/pedido/pedido.routes').then((m) => m.PEDIDO_ROUTES),
+      },
+      {
+        path: 'metodos-de-pago',
+        loadChildren: () => import('./features/info/info.routes').then((m) => m.INFO_ROUTES),
+      },
+      {
         path: 'marcas',
-        loadChildren: () => import('./features/marcas/marcas.routes').then((m) => m.MARCAS_ROUTES),
+        redirectTo: 'productos',
+        pathMatch: 'prefix',
       },
       {
         path: 'vendedor',
-        loadChildren: () =>
-          import('./features/vendedor/vendedor.routes').then((m) => m.VENDEDOR_ROUTES),
+        redirectTo: 'productos',
+        pathMatch: 'prefix',
       },
     ],
   },

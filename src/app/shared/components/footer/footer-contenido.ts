@@ -13,50 +13,30 @@ export const COLUMNAS_FOOTER: readonly ColumnaFooter[] = [
   {
     titulo: 'Menú',
     enlaces: [
-      { etiqueta: 'Diagramas de ECU', ruta: '/diagramas/ecu' },
-      { etiqueta: 'Tableros', ruta: '/diagramas/tableros' },
-      { etiqueta: 'Inmovilizadores', ruta: '/diagramas/inmovilizadores' },
-      { etiqueta: 'Airbag', ruta: '/diagramas/airbag' },
-      { etiqueta: 'Pinouts', ruta: '/diagramas/pinouts' },
-      { etiqueta: 'Más vendidos', ruta: '/mas-vendidos' },
-      { etiqueta: 'Mis pedidos', ruta: '/mis-pedidos' },
+      { etiqueta: 'Inicio', ruta: '/' },
+      { etiqueta: 'Productos', ruta: '/productos' },
+      { etiqueta: 'Carrito', ruta: '/carrito' },
+      { etiqueta: 'Pagar', ruta: '/checkout' },
     ],
   },
   {
-    titulo: 'Marcas',
+    titulo: 'Compra',
     enlaces: [
-      { etiqueta: 'Toyota', ruta: '/marcas/toyota' },
-      { etiqueta: 'Hyundai', ruta: '/marcas/hyundai' },
-      { etiqueta: 'Kia', ruta: '/marcas/kia' },
-      { etiqueta: 'Chevrolet', ruta: '/marcas/chevrolet' },
-      { etiqueta: 'Nissan', ruta: '/marcas/nissan' },
-      { etiqueta: 'Volkswagen', ruta: '/marcas/volkswagen' },
-      { etiqueta: 'Ford', ruta: '/marcas/ford' },
-      { etiqueta: 'Ver todas', ruta: '/' },
-    ],
-  },
-  {
-    titulo: 'Info',
-    enlaces: [
-      { etiqueta: 'Preguntas frecuentes', ruta: '/preguntas-frecuentes' },
-      { etiqueta: 'Acerca de', ruta: '/acerca-de' },
-      { etiqueta: 'Atención al cliente', ruta: '/atencion-al-cliente' },
-      { etiqueta: 'Sucursales', ruta: '/sucursales' },
-    ],
-  },
-  {
-    titulo: 'Mi cuenta',
-    enlaces: [
+      { etiqueta: 'Catálogo', ruta: '/productos' },
       { etiqueta: 'Mi carrito', ruta: '/carrito' },
-      { etiqueta: 'Mis pedidos', ruta: '/mis-pedidos' },
-      { etiqueta: 'Mi perfil', ruta: '/cuenta' },
+      { etiqueta: 'Checkout', ruta: '/checkout' },
+    ],
+  },
+  {
+    titulo: 'Ayuda',
+    enlaces: [
+      { etiqueta: 'Métodos de pago', ruta: '/metodos-de-pago' },
+      { etiqueta: 'Suscripción a ofertas', ruta: '/' },
     ],
   },
 ];
 
 export const ENLACES_LEGALES: readonly EnlaceFooter[] = [
-  { etiqueta: 'Términos y condiciones', ruta: '/terminos-y-condiciones' },
-  { etiqueta: 'Política de privacidad', ruta: '/politica-de-privacidad' },
   { etiqueta: 'Métodos de pago', ruta: '/metodos-de-pago' },
 ];
 
