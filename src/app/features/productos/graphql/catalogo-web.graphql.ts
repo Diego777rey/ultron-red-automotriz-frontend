@@ -25,8 +25,8 @@ export const PRODUCTO_CATALOGO_FIELDS = `
 `;
 
 export const CATALOGO_WEB_PRODUCTOS_QUERY = `
-  query CatalogoWebProductos($filter: String) {
-    catalogoWebProductos(filter: $filter) {
+  query CatalogoWebProductos($filter: String, $idCategoria: ID) {
+    catalogoWebProductos(filter: $filter, idCategoria: $idCategoria) {
       ${PRODUCTO_CATALOGO_FIELDS}
     }
   }
@@ -43,6 +43,19 @@ export const CATALOGO_WEB_PRODUCTO_POR_ID_QUERY = `
 export const CATALOGO_WEB_CATEGORIAS_QUERY = `
   query CatalogoWebCategorias {
     catalogoWebCategorias {
+      id_categoria_producto
+      nombre
+      categoriaPadre {
+        id_categoria_producto
+        nombre
+      }
+    }
+  }
+`;
+
+export const CATALOGO_WEB_CATEGORIAS_NAV_QUERY = `
+  query CatalogoWebCategoriasNav {
+    catalogoWebCategoriasNav {
       id_categoria_producto
       nombre
       categoriaPadre {

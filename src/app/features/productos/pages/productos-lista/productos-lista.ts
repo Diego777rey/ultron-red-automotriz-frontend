@@ -1,6 +1,6 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, computed, effect, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { map } from 'rxjs';
 import { CarritoService } from '../../../carrito/services/carrito.service';
 import { CategoriaChipsComponent } from '../../components/categoria-chips/categoria-chips';
@@ -16,9 +16,9 @@ import { ProductosService } from '../../services/productos.service';
       <nav class="productos-lista__migas" aria-label="Migas de pan">
         <a routerLink="/">Inicio</a>
         <span aria-hidden="true">/</span>
-        <span aria-current="page">Productos</span>
+        <span aria-current="page">{{ titulo() }}</span>
       </nav>
-      <h1>Productos</h1>
+      <h1>{{ titulo() }}</h1>
       @if (productos.busqueda(); as q) {
         <p class="productos-lista__busqueda">Resultados para “{{ q }}”</p>
       }
@@ -27,7 +27,7 @@ import { ProductosService } from '../../services/productos.service';
         <app-categoria-chips
           [categorias]="productos.categoriasLista()"
           [categoriaId]="productos.categoriaSeleccionada()"
-          (categoriaIdChange)="productos.setCategoria($event)"
+          (categoriaIdChange)="cambiarCategoria($event)"
         />
       }
 
@@ -57,20 +57,50 @@ export class ProductosListaComponent {
   protected readonly productos = inject(ProductosService);
   private readonly carrito = inject(CarritoService);
   private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
   private readonly query = toSignal(
-    this.route.queryParamMap.pipe(map((params) => params.get('q')?.trim() ?? '')),
-    { initialValue: '' },
+    this.route.queryParamMap.pipe(
+      map((params) => ({
+        q: params.get('q')?.trim() ?? '',
+        categoria: parseCategoria(params.get('categoria')),
+      })),
+    ),
+    { initialValue: { q: '', categoria: null as number | null } },
   );
 
+  protected readonly titulo = computed(() => {
+    const categoria = this.productos.categoriaActiva();
+    return categoria ? categoria.nombre : 'Productos';
+  });
+
   constructor() {
-    this.productos.cargar();
     effect(() => {
-      this.productos.setBusqueda(this.query());
+      const { q, categoria } = this.query();
+      this.productos.aplicarFiltros({ filter: q, idCategoria: categoria });
+    });
+  }
+
+  protected cambiarCategoria(id: number | null): void {
+    void this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        q: this.query().q || null,
+        categoria: id,
+      },
+      queryParamsHandling: 'merge',
     });
   }
 
   protected alAgregar(producto: ProductoCatalogo): void {
     this.carrito.agregar(producto);
   }
+}
+
+function parseCategoria(raw: string | null): number | null {
+  if (!raw) {
+    return null;
+  }
+  const id = Number(raw);
+  return Number.isFinite(id) ? id : null;
 }

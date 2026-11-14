@@ -39,15 +39,15 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 
 ## Project Structure
 
-This is the Red Automotriz web app (Angular + Angular Material + SSR). It is the public storefront for products published from Ultron gestión de activos (`mostrarEnWeb` + foto + precio). Catalog, cart checkout and newsletter talk to the backend GraphQL API. It follows the same architecture as `ultron-gestion-activos-frontend`:
+This is the **customer storefront** for Red Automotriz (Angular + Angular Material + SSR). Admin/ERP stays in `ultron-gestion-activos-frontend`; this site is **only for customers**. It sells products published from Ultron (`mostrarEnWeb` + foto + precio). The **catalog is browsable without registration**; optional customer accounts link to `personas.cliente` via GraphQL (`registrarCuentaClienteWeb` / `loginClienteWeb` / `miCuentaClienteWeb`). Cart, checkout and newsletter also talk to the backend GraphQL API. Architecture mirrors `ultron-gestion-activos-frontend`:
 
-- `src/app/core/`: app-wide singleton services (graphql, local storage).
-- `src/app/layouts/main-layout/`: header menu + `<main>` with the page `router-outlet` + cart drawer.
+- `src/app/core/`: app-wide singleton services (graphql, local storage, **auth** cliente web).
+- `src/app/layouts/main-layout/`: header + **department category bar** + `<main>` + cart drawer.
 - `src/app/shared/`: reusable components, models, services, pipes and directives. Export them from `src/app/shared/index.ts`.
 - `src/app/features/<feature>/`: one folder per business feature, with `<feature>.routes.ts` (`<FEATURE>_ROUTES`) and `pages/`. Register it in `app.routes.ts` with `loadChildren`, as a child of `MainLayoutComponent`.
-- The header menu lives in `src/app/shared/components/header/`. Its layout (brand on the left; search, cart and user icons on the right; search opens inline in the middle of the bar, never below it) is documented in `README.md`; keep it.
+- The header menu lives in `src/app/shared/components/header/`. Its layout (brand on the left; search, cart and user icons on the right; search opens inline in the middle of the bar, never below it) is documented in `README.md`; keep it. The person icon goes to `/cuenta` or `/cuenta/iniciar-sesion`.
 - The footer lives in `src/app/shared/components/footer/`. Its link columns, legal links and payment methods are data in `footer-contenido.ts`; site contact data (phone, social networks) is in `src/app/config/sitio.config.ts`. Change the data there, not in the template.
-- Products live in `src/app/features/productos/` and load from `catalogoWebProductos`. Home shows the product grid (not vehicle brands).
+- Products live in `src/app/features/productos/` (`catalogoWebProductos`, `catalogoWebCategorias`, `catalogoWebCategoriasNav`). Home shows department cards + featured products. Account UI lives in `src/app/features/cuenta/`.
 
 ## Styles and Angular Material
 

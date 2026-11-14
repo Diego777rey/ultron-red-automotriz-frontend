@@ -1,0 +1,97 @@
+.cuenta-form {
+  max-width: 520px;
+  margin-inline: auto;
+}
+
+.cuenta-form__migas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+
+  a {
+    color: var(--brand-color);
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      text-decoration: underline;
+      outline: none;
+    }
+  }
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: clamp(1.6rem, 3vw, 2rem);
+}
+
+.cuenta-form__bajada {
+  margin: 0 0 20px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+.cuenta-form__campos {
+  display: grid;
+  gap: 4px;
+}
+
+.cuenta-form__fila {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.cuenta-form__error {
+  color: var(--brand-color) !important;
+}
+
+.cuenta-form__mensaje {
+  margin: 4px 0 8px;
+  padding: 12px 14px;
+  border-radius: var(--radius-md);
+  background: color-mix(in srgb, var(--brand-color) 12%, var(--bg-color));
+  color: var(--text-primary);
+}
+
+.cuenta-form__pie {
+  margin-top: 20px;
+  color: var(--text-secondary);
+
+  a {
+    color: var(--brand-color);
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover,
+    &:focus-visible {
+      text-decoration: underline;
+      outline: none;
+    }
+  }
+}
+
+.cuenta-form__paso {
+  margin: 0 0 8px;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.cuenta-form__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+@media (max-width: 599px) {
+  .cuenta-form__fila {
+    grid-template-columns: 1fr;
+  }
+}
