@@ -2,9 +2,11 @@
 
 ## Acerca del proyecto
 
-**Red Automotriz** es la tienda web de Ultron Sistemas. Vende **productos** publicados desde el backend de **gestión de activos** (GraphQL: `catalogoWebProductos`, pedidos web y newsletter). Solo aparecen ítems con `mostrarEnWeb`, imagen y precio de venta mayor a cero.
+**Red Automotriz** es la **tienda web para clientes** de Ultron Sistemas. El ERP/admin queda en el desktop de gestión de activos; este sitio es solo vitrina y compra. Vende **productos** publicados desde el backend (`mostrarEnWeb`, imagen y precio de venta > 0).
 
-Está hecho con Angular 22 + Angular Material, con SSR. Sigue la misma arquitectura y buenas prácticas que `ultron-gestion-activos-frontend`, pero se publica como sitio web.
+El **catálogo se navega sin registrarse**. La cuenta de cliente es opcional (más rápida en checkout) y se vincula a `personas.cliente` vía GraphQL.
+
+Está hecho con Angular 22 + Angular Material, con SSR. Misma arquitectura base que `ultron-gestion-activos-frontend`.
 
 ## Requisitos
 
@@ -27,34 +29,36 @@ npm run serve:ssr:ultron-red-automotriz-frontend   # sirve el build SSR (puerto 
 ```text
 src/app/
 ├── config/            # api.config.ts + sitio.config.ts
-├── core/              # graphql, almacenamiento local
-├── layouts/main-layout/
+├── core/              # graphql, almacenamiento local, auth cliente web
+├── layouts/main-layout/  # header + barra de departamentos + drawer
 ├── shared/            # header, footer, svg-icon
 └── features/
-    ├── inicio/        # hero + grilla de productos + newsletter
-    ├── productos/     # listado, detalle, tarjeta, catálogo GraphQL
+    ├── inicio/        # hero + categorías + destacados + newsletter
+    ├── productos/     # listado, detalle, nav de departamentos, GraphQL
+    ├── cuenta/        # registro, login, mi cuenta
     ├── carrito/       # carrito en localStorage
     ├── checkout/      # cliente + tarjeta → registrarPedidoWeb
     └── pedido/        # confirmación por código
 ```
 
-Rutas principales: `/`, `/productos`, `/productos/:id`, `/carrito`, `/checkout`, `/pedido/:codigo`. `/marcas` y `/vendedor` redirigen al catálogo.
+Rutas principales: `/`, `/productos`, `/productos/:id`, `/productos?categoria=&q=`, `/categorias/:id` (redirige), `/carrito`, `/checkout`, `/pedido/:codigo`, `/cuenta`, `/cuenta/iniciar-sesion`, `/cuenta/registro`.
 
-## Menú superior (`shared/components/header`)
+## Menú superior y departamentos
 
-Barra roja `#EA1414`, marca a la izquierda; búsqueda, carrito y usuario a la derecha. La búsqueda se abre en el medio de la barra (nunca debajo). Al enviar, navega a `/productos?q=...`. El carrito abre el panel lateral; desde ahí se puede ir a `/carrito` o `/checkout`. El icono de cuenta lleva al bloque de newsletter del inicio.
+Barra roja `#EA1414`, marca a la izquierda; búsqueda, carrito y usuario a la derecha. La búsqueda se abre en el medio de la barra. Debajo, barra horizontal de departamentos (`catalogoWebCategoriasNav`) hacia `/productos?categoria=<id>`. El icono de cuenta lleva a `/cuenta` si hay sesión, si no a `/cuenta/iniciar-sesion`.
 
-## Catálogo y carrito
+## Catálogo, cuenta y carrito
 
-- `ProductosService` consulta `catalogoWebProductos` / `catalogoWebProductoPorId` / `catalogoWebCategorias`.
-- Las imágenes relativas se resuelven contra `{api}/uploads/...`.
-- `CarritoService` persiste líneas `{ productoId, presentacionId?, cantidad, nombre, precio, imagenUrl }` en `localStorage` (`ra-carrito-v1`).
-- Checkout envía `registrarPedidoWeb` (incluye `pagoTarjeta` al backend; no loguear el PAN).
-- Newsletter: mutation `suscribirNewsletter`.
+- `ProductosService`: `catalogoWebProductos(filter, idCategoria)`, `catalogoWebProductoPorId`, `catalogoWebCategorias`, `catalogoWebCategoriasNav`.
+- `AuthService`: sesión en `localStorage` (`ra-cliente-sesion-v1`); `GraphqlService` envía `Authorization: Bearer` cuando hay token.
+- Cuenta: `registrarCuentaClienteWeb`, `loginClienteWeb`, `miCuentaClienteWeb`.
+- Checkout permite invitado; si hay sesión, precarga datos y muestra CTA suave para login/registro.
+- `CarritoService` persiste en `localStorage` (`ra-carrito-v1`).
+- Pedido: `registrarPedidoWeb`. Newsletter: `suscribirNewsletter`.
 
 ## Pie de página
 
-Contacto en `sitio.config.ts`. Columnas (Menú → Productos/Carrito, etc.) en `footer-contenido.ts`.
+Contacto en `sitio.config.ts`. Menú: Productos, Categorías (inicio), Carrito, Cuenta, Métodos de pago — en `footer-contenido.ts`.
 
 ## Estilos
 

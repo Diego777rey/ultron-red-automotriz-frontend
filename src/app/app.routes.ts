@@ -33,6 +33,17 @@ export const routes: Routes = [
         loadChildren: () => import('./features/info/info.routes').then((m) => m.INFO_ROUTES),
       },
       {
+        path: 'cuenta',
+        loadChildren: () => import('./features/cuenta/cuenta.routes').then((m) => m.CUENTA_ROUTES),
+      },
+      {
+        path: 'categorias/:id',
+        loadComponent: () =>
+          import('./features/productos/pages/categoria-redirect/categoria-redirect').then(
+            (m) => m.CategoriaRedirectComponent,
+          ),
+      },
+      {
         path: 'marcas',
         redirectTo: 'productos',
         pathMatch: 'prefix',
@@ -44,6 +55,7 @@ export const routes: Routes = [
       },
     ],
   },
+
   {
     path: '**',
     redirectTo: '',

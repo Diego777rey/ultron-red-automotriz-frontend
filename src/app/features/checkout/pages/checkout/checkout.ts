@@ -4,6 +4,7 @@ import { MatButton } from '@angular/material/button';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../../../../core/auth/auth.service';
 import { GraphqlRequestError } from '../../../../core/graphql/graphql.service';
 import { CarritoService } from '../../../carrito/services/carrito.service';
 import { formatearGs } from '../../../productos/services/productos.mapper';
@@ -19,6 +20,27 @@ import { PedidosWebService } from '../../services/pedidos-web.service';
         Total a pagar:
         <strong>{{ formatear(carrito.subtotal()) }}</strong>
       </p>
+
+      @if (!auth.estaAutenticado()) {
+        <aside class="checkout__cta-cuenta" aria-label="Cuenta opcional">
+          <p>
+            ¿Ya tenés cuenta?
+            <a routerLink="/cuenta/iniciar-sesion" [queryParams]="{ returnUrl: '/checkout' }"
+              >Iniciá sesión</a
+            >
+            ·
+            <a routerLink="/cuenta/registro" [queryParams]="{ returnUrl: '/checkout' }"
+              >Creá tu cuenta para comprar más rápido</a
+            >
+          </p>
+          <p class="checkout__cta-nota">También podés completar el pedido como invitado.</p>
+        </aside>
+      } @else {
+        <p class="checkout__sesion">
+          Comprando como <strong>{{ auth.nombreVisible() }}</strong>.
+          <a routerLink="/cuenta">Ver mi cuenta</a>
+        </p>
+      }
 
       @if (carrito.vacio()) {
         <p>No hay productos en el carrito.</p>
@@ -115,6 +137,7 @@ export class CheckoutComponent {
   private readonly pedidos = inject(PedidosWebService);
   private readonly router = inject(Router);
   protected readonly carrito = inject(CarritoService);
+  protected readonly auth = inject(AuthService);
 
   protected readonly formulario = this.fb.nonNullable.group({
     clienteNombre: ['', [Validators.required, Validators.minLength(3)]],
@@ -133,6 +156,10 @@ export class CheckoutComponent {
   protected readonly procesando = signal(false);
   protected readonly mensaje = signal<string | null>(null);
   protected readonly exito = signal(false);
+
+  constructor() {
+    this.prellenarDesdeCuenta();
+  }
 
   protected formatear(monto: number): string {
     return formatearGs(monto);
@@ -190,5 +217,21 @@ export class CheckoutComponent {
           );
         },
       });
+  }
+
+  private prellenarDesdeCuenta(): void {
+    const perfil = this.auth.perfil();
+    if (!perfil) {
+      return;
+    }
+    const nombreCompleto = [perfil.nombre, perfil.apellido].filter(Boolean).join(' ').trim();
+    this.formulario.patchValue({
+      clienteNombre: nombreCompleto || this.formulario.controls.clienteNombre.value,
+      clienteEmail: perfil.email || this.formulario.controls.clienteEmail.value,
+      clienteTelefono: perfil.telefono ?? '',
+      clienteDocumento: perfil.documento ?? '',
+      direccionEnvio: perfil.direccion ?? '',
+      titular: nombreCompleto || this.formulario.controls.titular.value,
+    });
   }
 }

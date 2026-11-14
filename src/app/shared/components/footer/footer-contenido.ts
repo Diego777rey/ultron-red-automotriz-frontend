@@ -13,10 +13,11 @@ export const COLUMNAS_FOOTER: readonly ColumnaFooter[] = [
   {
     titulo: 'Menú',
     enlaces: [
-      { etiqueta: 'Inicio', ruta: '/' },
       { etiqueta: 'Productos', ruta: '/productos' },
+      { etiqueta: 'Categorías', ruta: '/' },
       { etiqueta: 'Carrito', ruta: '/carrito' },
-      { etiqueta: 'Pagar', ruta: '/checkout' },
+      { etiqueta: 'Cuenta', ruta: '/cuenta' },
+      { etiqueta: 'Métodos de pago', ruta: '/metodos-de-pago' },
     ],
   },
   {
@@ -25,12 +26,14 @@ export const COLUMNAS_FOOTER: readonly ColumnaFooter[] = [
       { etiqueta: 'Catálogo', ruta: '/productos' },
       { etiqueta: 'Mi carrito', ruta: '/carrito' },
       { etiqueta: 'Checkout', ruta: '/checkout' },
+      { etiqueta: 'Crear cuenta', ruta: '/cuenta/registro' },
     ],
   },
   {
     titulo: 'Ayuda',
     enlaces: [
       { etiqueta: 'Métodos de pago', ruta: '/metodos-de-pago' },
+      { etiqueta: 'Iniciar sesión', ruta: '/cuenta/iniciar-sesion' },
       { etiqueta: 'Suscripción a ofertas', ruta: '/' },
     ],
   },
