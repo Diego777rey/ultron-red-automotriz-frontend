@@ -3,6 +3,8 @@ export interface CategoriaCatalogo {
   id: number;
   nombre: string;
   padre?: { id: number; nombre: string } | null;
+  /** Subcategorías de una familia. Solo viene en el menú de la tienda. */
+  subcategorias?: readonly CategoriaCatalogo[];
 }
 
 /** Presentación (pack / unidad) opcional de un producto. */
@@ -66,4 +68,5 @@ export interface CategoriaCatalogoGql {
     id_categoria_producto: number | string;
     nombre: string;
   } | null;
+  subcategorias?: CategoriaCatalogoGql[] | null;
 }

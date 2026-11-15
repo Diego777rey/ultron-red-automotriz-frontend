@@ -31,6 +31,13 @@ describe('HeaderComponent', () => {
     expect(marca.getAttribute('href')).toBe('/');
   });
 
+  it('ofrece el menú de categorías junto a la marca', () => {
+    const boton = elemento.querySelector<HTMLButtonElement>('.header__menu');
+    expect(boton?.getAttribute('aria-label')).toBe('Abrir menú de categorías');
+    expect(boton?.getAttribute('aria-expanded')).toBe('false');
+    expect(boton?.querySelector('mat-icon')?.textContent?.trim()).toBe('menu');
+  });
+
   it('ordena los accesos como lupa, carrito y usuario', () => {
     const iconos = botonesDeAcciones().map((boton) =>
       boton.querySelector('mat-icon')?.textContent?.trim(),

@@ -5,10 +5,12 @@ import { GraphqlRequestError, GraphqlService } from '../../../core/graphql/graph
 import {
   CATALOGO_WEB_CATEGORIAS_NAV_QUERY,
   CATALOGO_WEB_CATEGORIAS_QUERY,
+  CATALOGO_WEB_PRODUCTOS_MAS_COMPRADOS_QUERY,
   CATALOGO_WEB_PRODUCTOS_QUERY,
   CATALOGO_WEB_PRODUCTO_POR_ID_QUERY,
   SUSCRIBIR_NEWSLETTER_MUTATION,
 } from '../graphql/catalogo-web.graphql';
+import { buscarCategoriaMenu } from '../data/menu-categorias.data';
 import {
   CategoriaCatalogo,
   CategoriaCatalogoGql,
@@ -19,6 +21,10 @@ import { mapCategoriaCatalogo, mapProductoCatalogo } from './productos.mapper';
 
 interface CatalogoProductosData {
   catalogoWebProductos: ProductoCatalogoGql[];
+}
+
+interface CatalogoMasCompradosData {
+  catalogoWebProductosMasComprados: ProductoCatalogoGql[];
 }
 
 interface CatalogoProductoData {
@@ -48,19 +54,37 @@ export class ProductosService {
   private readonly graphql = inject(GraphqlService);
 
   private readonly productos = signal<readonly ProductoCatalogo[]>([]);
+  private readonly masCompradosLista = signal<readonly ProductoCatalogo[]>([]);
+  private readonly cargandoMasComprados = signal(false);
+  private readonly errorMasComprados = signal<string | null>(null);
   private readonly categorias = signal<readonly CategoriaCatalogo[]>([]);
   private readonly categoriasNav = signal<readonly CategoriaCatalogo[]>([]);
+  private readonly categoriasNavListas = signal(false);
+  private readonly errorNav = signal<string | null>(null);
   private readonly cargando = signal(false);
   private readonly error = signal<string | null>(null);
+  private masCompradosCargado = false;
+  private masCompradosEnCurso = false;
   private readonly filtroTexto = signal('');
   private readonly categoriaId = signal<number | null>(null);
   private cargado = false;
+  private categoriasConsultadas = false;
+  private navConsultada = false;
+  private navEnCurso = false;
+  private cargaSeq = 0;
+  private pedidoFilter: string | null = null;
+  private pedidoIdCategoria: number | null = null;
   private ultimoFilterApi: string | null = null;
   private ultimoIdCategoriaApi: number | null = null;
 
   readonly todos = this.productos.asReadonly();
+  readonly masComprados = this.masCompradosLista.asReadonly();
+  readonly estaCargandoMasComprados = this.cargandoMasComprados.asReadonly();
+  readonly mensajeErrorMasComprados = this.errorMasComprados.asReadonly();
   readonly categoriasLista = this.categorias.asReadonly();
   readonly categoriasNavLista = this.categoriasNav.asReadonly();
+  readonly categoriasNavCargadas = this.categoriasNavListas.asReadonly();
+  readonly mensajeErrorCategorias = this.errorNav.asReadonly();
   readonly estaCargando = this.cargando.asReadonly();
   readonly mensajeError = this.error.asReadonly();
   readonly busqueda = this.filtroTexto.asReadonly();
@@ -72,9 +96,7 @@ export class ProductosService {
       return null;
     }
     return (
-      this.categoriasNav().find((c) => c.id === id) ??
-      this.categorias().find((c) => c.id === id) ??
-      null
+      buscarCategoriaMenu(id) ?? this.categorias().find((c) => c.id === id) ?? null
     );
   });
 
@@ -83,11 +105,15 @@ export class ProductosService {
     // la grilla reutiliza un caché completo (p. ej. inicio sin categoría).
     const termino = this.filtroTexto().trim().toLowerCase();
     const categoriaId = this.categoriaId();
+    const menu = buscarCategoriaMenu(categoriaId);
     return this.productos().filter((producto) => {
       const coincideCategoria =
         categoriaId == null ||
         producto.categoria?.id === categoriaId ||
-        producto.categoria?.padre?.id === categoriaId;
+        producto.categoria?.padre?.id === categoriaId ||
+        (menu != null &&
+          (producto.categoria?.nombre?.toLowerCase() === menu.nombre.toLowerCase() ||
+            producto.categoria?.padre?.nombre?.toLowerCase() === menu.nombre.toLowerCase()));
       if (!coincideCategoria) {
         return false;
       }
@@ -106,9 +132,32 @@ export class ProductosService {
     });
   });
 
-  readonly destacados = computed(() => this.filtrados().slice(0, 8));
-
   readonly total = computed(() => this.filtrados().length);
+
+  /** Carga el ranking de más comprados para la home. */
+  cargarMasComprados(limite = 12, forzar = false): void {
+    if ((this.masCompradosCargado || this.masCompradosEnCurso) && !forzar) {
+      return;
+    }
+    this.masCompradosEnCurso = true;
+    this.cargandoMasComprados.set(true);
+    this.errorMasComprados.set(null);
+    this.graphql
+      .query<CatalogoMasCompradosData>(CATALOGO_WEB_PRODUCTOS_MAS_COMPRADOS_QUERY, { limite })
+      .pipe(
+        map((data) => (data.catalogoWebProductosMasComprados ?? []).map(mapProductoCatalogo)),
+        catchError((err: unknown) => {
+          this.errorMasComprados.set(mensajeError(err, 'No se pudieron cargar los más comprados'));
+          return of([] as ProductoCatalogo[]);
+        }),
+      )
+      .subscribe((lista) => {
+        this.masCompradosLista.set(lista);
+        this.cargandoMasComprados.set(false);
+        this.masCompradosEnCurso = false;
+        this.masCompradosCargado = true;
+      });
+  }
 
   /**
    * Carga el catálogo. Si cambian `filter` o `idCategoria`, vuelve a consultar el API.
@@ -120,24 +169,28 @@ export class ProductosService {
       opciones && 'idCategoria' in opciones
         ? (opciones.idCategoria ?? null)
         : this.categoriaId();
+    // El menú de la tienda es fijo: no enviar esos ids al API.
+    const idCategoriaApi = buscarCategoriaMenu(idCategoria) ? null : idCategoria;
 
     const mismosParametros =
-      this.cargado &&
-      !opciones?.forzar &&
-      this.ultimoFilterApi === filter &&
-      this.ultimoIdCategoriaApi === idCategoria;
+      this.ultimoFilterApi === filter && this.ultimoIdCategoriaApi === idCategoriaApi;
+    const mismoPedido =
+      this.pedidoFilter === filter && this.pedidoIdCategoria === idCategoriaApi;
 
-    if (mismosParametros) {
+    if ((this.cargado && !opciones?.forzar && mismosParametros) || (this.cargando() && mismoPedido)) {
       return;
     }
 
+    const seq = ++this.cargaSeq;
+    this.pedidoFilter = filter;
+    this.pedidoIdCategoria = idCategoriaApi;
     this.cargando.set(true);
     this.error.set(null);
 
     this.graphql
       .query<CatalogoProductosData>(CATALOGO_WEB_PRODUCTOS_QUERY, {
         filter,
-        idCategoria: idCategoria != null ? String(idCategoria) : null,
+        idCategoria: idCategoriaApi != null ? String(idCategoriaApi) : null,
       })
       .pipe(
         map((data) => (data.catalogoWebProductos ?? []).map(mapProductoCatalogo)),
@@ -147,19 +200,21 @@ export class ProductosService {
         }),
       )
       .subscribe((lista) => {
+        if (seq !== this.cargaSeq) {
+          return;
+        }
         this.productos.set(lista);
         this.cargando.set(false);
         this.cargado = true;
         this.ultimoFilterApi = filter;
-        this.ultimoIdCategoriaApi = idCategoria;
+        this.ultimoIdCategoriaApi = idCategoriaApi;
       });
 
     this.cargarCategorias();
-    this.cargarCategoriasNav();
   }
 
   cargarCategorias(forzar = false): void {
-    if (this.categorias().length > 0 && !forzar) {
+    if ((this.categoriasConsultadas || this.categorias().length > 0) && !forzar) {
       return;
     }
     this.graphql
@@ -168,21 +223,34 @@ export class ProductosService {
         map((data) => (data.catalogoWebCategorias ?? []).map(mapCategoriaCatalogo)),
         catchError(() => of([] as CategoriaCatalogo[])),
       )
-      .subscribe((lista) => this.categorias.set(lista));
+      .subscribe((lista) => {
+        this.categorias.set(lista);
+        this.categoriasConsultadas = true;
+      });
   }
 
-  /** Departamentos raíz para la barra de categorías (siempre públicos). */
+  /** Familias y subcategorías activas, las mismas que carga el escritorio. */
   cargarCategoriasNav(forzar = false): void {
-    if (this.categoriasNav().length > 0 && !forzar) {
+    if ((this.navConsultada || this.navEnCurso) && !forzar) {
       return;
     }
+    this.navEnCurso = true;
+    this.errorNav.set(null);
     this.graphql
       .query<CatalogoCategoriasNavData>(CATALOGO_WEB_CATEGORIAS_NAV_QUERY)
       .pipe(
         map((data) => (data.catalogoWebCategoriasNav ?? []).map(mapCategoriaCatalogo)),
-        catchError(() => of([] as CategoriaCatalogo[])),
+        catchError((err: unknown) => {
+          this.errorNav.set(mensajeError(err, 'No se pudieron cargar las categorías'));
+          return of([] as CategoriaCatalogo[]);
+        }),
       )
-      .subscribe((lista) => this.categoriasNav.set(lista));
+      .subscribe((lista) => {
+        this.categoriasNav.set(lista);
+        this.navEnCurso = false;
+        this.navConsultada = true;
+        this.categoriasNavListas.set(true);
+      });
   }
 
   porId(id: number | string): Observable<ProductoCatalogo | null> {
@@ -230,10 +298,14 @@ export class ProductosService {
     if ('idCategoria' in opciones) {
       this.categoriaId.set(opciones.idCategoria ?? null);
     }
+    const filter = this.filtroTexto().trim() || null;
+    const idCategoria = this.categoriaId();
+    const yaCargado =
+      this.cargado && this.ultimoFilterApi === filter && this.ultimoIdCategoriaApi === idCategoria;
     this.cargar({
       filter: this.filtroTexto(),
-      idCategoria: this.categoriaId(),
-      forzar: true,
+      idCategoria,
+      forzar: !yaCargado,
     });
   }
 

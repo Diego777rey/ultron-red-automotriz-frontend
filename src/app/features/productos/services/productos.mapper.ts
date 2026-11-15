@@ -17,11 +17,12 @@ function aNumero(valor: number | string | null | undefined, fallback = 0): numbe
 
 function mapCategoria(
   raw: ProductoCatalogoGql['categoriaProducto'] | CategoriaCatalogoGql | null | undefined,
+  padreExplicito?: { id: number; nombre: string } | null,
 ): CategoriaCatalogo | null {
   if (!raw) {
     return null;
   }
-  return {
+  const categoria: CategoriaCatalogo = {
     id: aNumero(raw.id_categoria_producto),
     nombre: raw.nombre,
     padre: raw.categoriaPadre
@@ -29,8 +30,16 @@ function mapCategoria(
           id: aNumero(raw.categoriaPadre.id_categoria_producto),
           nombre: raw.categoriaPadre.nombre,
         }
-      : null,
+      : (padreExplicito ?? null),
   };
+  const subcategorias = 'subcategorias' in raw ? raw.subcategorias : undefined;
+  if (subcategorias) {
+    const padre = { id: categoria.id, nombre: categoria.nombre };
+    categoria.subcategorias = subcategorias
+      .map((sub) => mapCategoria(sub, padre))
+      .filter((sub): sub is CategoriaCatalogo => sub != null);
+  }
+  return categoria;
 }
 
 function mapPresentacion(

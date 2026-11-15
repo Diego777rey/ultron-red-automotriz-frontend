@@ -1,0 +1,169 @@
+:host {
+  display: block;
+  height: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  height: 100%;
+  background: var(--bg-color);
+  color: var(--text-primary);
+}
+
+.menu__cabecera {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  min-height: 56px;
+  padding: 8px 20px;
+  border-bottom: 2px solid var(--brand-color);
+  background: var(--bg-color);
+}
+
+.menu__cabecera-titulo {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 1.125rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.menu__nav {
+  flex: 1;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.menu__seccion {
+  margin: 0;
+  padding: 14px 20px 8px;
+  color: var(--text-secondary);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.menu__lista,
+.menu__subs-lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.menu__grupo {
+  border-bottom: 1px solid var(--border-color);
+}
+
+.menu__item,
+.menu__sub {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 48px;
+  margin: 0;
+  padding: 14px 20px;
+  border: 0;
+  background: transparent;
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: left;
+  text-decoration: none;
+  cursor: pointer;
+
+  &:hover {
+    background: color-mix(in srgb, var(--brand-color) 7%, var(--bg-color));
+    color: var(--brand-color);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--brand-color);
+    outline-offset: -2px;
+  }
+}
+
+.menu__nombre {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.menu__item mat-icon {
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  font-size: 22px;
+  color: var(--text-secondary);
+}
+
+.menu__item--abierta {
+  background: var(--surface-color);
+
+  mat-icon {
+    color: var(--text-primary);
+  }
+}
+
+/* El sidenav enfoca el primer botón al abrir: no dejarlo pintado de rojo. */
+.menu__item--familia:focus:not(:focus-visible) {
+  outline: none;
+  background: transparent;
+  color: var(--text-primary);
+
+  mat-icon {
+    color: var(--text-secondary);
+  }
+}
+
+.menu__item--familia.menu__item--abierta:focus:not(:focus-visible) {
+  background: var(--surface-color);
+}
+
+.menu__subs {
+  display: grid;
+  grid-template-rows: 0fr;
+  background: var(--surface-color);
+  transition: grid-template-rows 0.2s ease;
+}
+
+.menu__subs--abierta {
+  grid-template-rows: 1fr;
+}
+
+.menu__subs-caja {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.menu__sub {
+  min-height: 44px;
+  padding: 12px 20px 12px 32px;
+  border-top: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.menu__sub--activa {
+  color: var(--brand-color);
+  font-weight: 700;
+  background: color-mix(in srgb, var(--brand-color) 12%, var(--bg-color));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu__subs {
+    transition: none;
+  }
+}

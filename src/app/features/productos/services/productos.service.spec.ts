@@ -135,4 +135,43 @@ describe('ProductosService', () => {
     servicio.setBusqueda('aceite');
     expect(servicio.filtrados().map((p) => p.nombre)).toEqual(['Aceite']);
   });
+
+  it('guarda las subcategorías de cada familia', () => {
+    servicio.cargarCategoriasNav();
+
+    const req = http.expectOne(API_CONFIG.graphqlEndpoint);
+    req.flush({
+      data: {
+        catalogoWebCategoriasNav: [
+          {
+            id_categoria_producto: 1,
+            nombre: 'TALLER',
+            subcategorias: [{ id_categoria_producto: 2, nombre: 'FILTROS' }],
+          },
+        ],
+      },
+    });
+
+    const familia = servicio.categoriasNavLista()[0];
+    expect(familia.nombre).toBe('TALLER');
+    expect(familia.subcategorias?.[0]).toEqual({
+      id: 2,
+      nombre: 'FILTROS',
+      padre: { id: 1, nombre: 'TALLER' },
+    });
+
+    servicio.setCategoria(2);
+    expect(servicio.categoriaActiva()?.nombre).toBe('FILTROS');
+    expect(servicio.categoriasNavCargadas()).toBe(true);
+  });
+
+  it('no repite la consulta del catálogo cuando el filtro no cambió', () => {
+    servicio.aplicarFiltros({ filter: '', idCategoria: null });
+    responderCarga([]);
+
+    servicio.aplicarFiltros({ filter: '', idCategoria: null });
+    http.expectNone(API_CONFIG.graphqlEndpoint);
+    expect(servicio.estaCargando()).toBe(false);
+    expect(servicio.todos()).toEqual([]);
+  });
 });
