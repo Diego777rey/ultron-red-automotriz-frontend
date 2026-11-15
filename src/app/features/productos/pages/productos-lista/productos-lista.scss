@@ -3,6 +3,10 @@
   margin-inline: auto;
 }
 
+.productos-lista__catalogo {
+  min-width: 0;
+}
+
 .productos-lista__migas {
   display: flex;
   flex-wrap: wrap;

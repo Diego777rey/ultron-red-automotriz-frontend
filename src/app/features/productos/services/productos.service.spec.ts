@@ -20,30 +20,19 @@ describe('ProductosService', () => {
     http.verify();
   });
 
-  function responderCarga(
-    productos: unknown[],
-    categorias: unknown[] = [],
-    categoriasNav: unknown[] = [],
-  ): void {
+  function responderCarga(productos: unknown[], categorias: unknown[] = []): void {
     const requests = http.match(API_CONFIG.graphqlEndpoint);
-    expect(requests.length).toBe(3);
+    expect(requests.length).toBe(2);
     const productosReq = requests.find((req) =>
       String(req.request.body.query).includes('catalogoWebProductos'),
     );
-    const categoriasReq = requests.find(
-      (req) =>
-        String(req.request.body.query).includes('catalogoWebCategorias') &&
-        !String(req.request.body.query).includes('catalogoWebCategoriasNav'),
-    );
-    const navReq = requests.find((req) =>
-      String(req.request.body.query).includes('catalogoWebCategoriasNav'),
+    const categoriasReq = requests.find((req) =>
+      String(req.request.body.query).includes('catalogoWebCategorias'),
     );
     expect(productosReq).toBeTruthy();
     expect(categoriasReq).toBeTruthy();
-    expect(navReq).toBeTruthy();
     productosReq!.flush({ data: { catalogoWebProductos: productos } });
     categoriasReq!.flush({ data: { catalogoWebCategorias: categorias } });
-    navReq!.flush({ data: { catalogoWebCategoriasNav: categoriasNav } });
   }
 
   it('carga el catálogo web desde GraphQL', () => {
@@ -76,7 +65,7 @@ describe('ProductosService', () => {
     servicio.aplicarFiltros({ filter: 'aceite', idCategoria: 7 });
 
     const requests = http.match(API_CONFIG.graphqlEndpoint);
-    expect(requests.length).toBe(3);
+    expect(requests.length).toBe(2);
     const productosReq = requests.find((req) =>
       String(req.request.body.query).includes('catalogoWebProductos'),
     );
@@ -90,19 +79,34 @@ describe('ProductosService', () => {
       const query = String(req.request.body.query);
       if (query.includes('catalogoWebProductos')) {
         req.flush({ data: { catalogoWebProductos: [] } });
-      } else if (query.includes('catalogoWebCategoriasNav')) {
-        req.flush({
-          data: {
-            catalogoWebCategoriasNav: [
-              { id_categoria_producto: 7, nombre: 'Taller', categoriaPadre: null },
-            ],
-          },
-        });
       } else {
         req.flush({ data: { catalogoWebCategorias: [] } });
       }
     }
     expect(servicio.categoriaSeleccionada()).toBe(7);
+  });
+
+  it('no envía al API los ids del menú fijo de la tienda', () => {
+    servicio.aplicarFiltros({ filter: '', idCategoria: 102 });
+
+    const requests = http.match(API_CONFIG.graphqlEndpoint);
+    const productosReq = requests.find((req) =>
+      String(req.request.body.query).includes('catalogoWebProductos'),
+    );
+    expect(productosReq!.request.body.variables).toEqual({
+      filter: null,
+      idCategoria: null,
+    });
+
+    for (const req of requests) {
+      const query = String(req.request.body.query);
+      if (query.includes('catalogoWebProductos')) {
+        req.flush({ data: { catalogoWebProductos: [] } });
+      } else {
+        req.flush({ data: { catalogoWebCategorias: [] } });
+      }
+    }
+    expect(servicio.categoriaActiva()?.nombre).toBe('FILTROS');
   });
 
   it('filtra por texto de búsqueda', () => {
@@ -134,5 +138,49 @@ describe('ProductosService', () => {
 
     servicio.setBusqueda('aceite');
     expect(servicio.filtrados().map((p) => p.nombre)).toEqual(['Aceite']);
+  });
+
+  it('resuelve la categoría activa desde el menú fijo', () => {
+    servicio.setCategoria(102);
+    expect(servicio.categoriaActiva()?.nombre).toBe('FILTROS');
+    expect(servicio.categoriaActiva()?.padre?.nombre).toBe('VEHICULOS LIVIANOS / AUTOMOVILES');
+  });
+
+  it('carga más comprados desde GraphQL', () => {
+    servicio.cargarMasComprados(8);
+
+    const req = http.expectOne(API_CONFIG.graphqlEndpoint);
+    expect(String(req.request.body.query)).toContain('catalogoWebProductosMasComprados');
+    expect(req.request.body.variables).toEqual({ limite: 8 });
+    req.flush({
+      data: {
+        catalogoWebProductosMasComprados: [
+          {
+            id_producto: 9,
+            codigo: 'TOP',
+            nombre: 'Más vendido',
+            descripcion: '',
+            precioVenta: 1000,
+            imagen: 'top.jpg',
+            tipoIva: '10',
+            categoriaProducto: null,
+            presentaciones: [],
+          },
+        ],
+      },
+    });
+
+    expect(servicio.masComprados()).toHaveLength(1);
+    expect(servicio.masComprados()[0].nombre).toBe('Más vendido');
+  });
+
+  it('no repite la consulta del catálogo cuando el filtro no cambió', () => {
+    servicio.aplicarFiltros({ filter: '', idCategoria: null });
+    responderCarga([]);
+
+    servicio.aplicarFiltros({ filter: '', idCategoria: null });
+    http.expectNone(API_CONFIG.graphqlEndpoint);
+    expect(servicio.estaCargando()).toBe(false);
+    expect(servicio.todos()).toEqual([]);
   });
 });

@@ -32,6 +32,14 @@ export const CATALOGO_WEB_PRODUCTOS_QUERY = `
   }
 `;
 
+export const CATALOGO_WEB_PRODUCTOS_MAS_COMPRADOS_QUERY = `
+  query CatalogoWebProductosMasComprados($limite: Int) {
+    catalogoWebProductosMasComprados(limite: $limite) {
+      ${PRODUCTO_CATALOGO_FIELDS}
+    }
+  }
+`;
+
 export const CATALOGO_WEB_PRODUCTO_POR_ID_QUERY = `
   query CatalogoWebProductoPorId($id: ID!) {
     catalogoWebProductoPorId(id: $id) {
@@ -58,7 +66,7 @@ export const CATALOGO_WEB_CATEGORIAS_NAV_QUERY = `
     catalogoWebCategoriasNav {
       id_categoria_producto
       nombre
-      categoriaPadre {
+      subcategorias {
         id_categoria_producto
         nombre
       }

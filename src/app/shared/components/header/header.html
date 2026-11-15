@@ -1,8 +1,20 @@
 <header>
   <mat-toolbar class="header" [class.header--buscando]="busquedaAbierta()">
-    <a class="header__marca" routerLink="/" aria-label="Red Automotriz, ir al inicio"
-      >Red Automotriz.</a
-    >
+    <div class="header__inicio">
+      <button
+        mat-icon-button
+        type="button"
+        class="header__menu"
+        [attr.aria-expanded]="menuAbierto()"
+        [attr.aria-label]="menuAbierto() ? 'Cerrar menú de categorías' : 'Abrir menú de categorías'"
+        (click)="alternarMenu.emit()"
+      >
+        <mat-icon>menu</mat-icon>
+      </button>
+      <a class="header__marca" routerLink="/" aria-label="Red Automotriz, ir al inicio"
+        >Red Automotriz.</a
+      >
+    </div>
 
     <form
       id="busqueda-principal"

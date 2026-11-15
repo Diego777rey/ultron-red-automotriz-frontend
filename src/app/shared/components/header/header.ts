@@ -27,9 +27,11 @@ import { RouterLink } from '@angular/router';
 })
 export class HeaderComponent {
   readonly cantidadCarrito = input(0);
+  readonly menuAbierto = input(false);
   readonly buscar = output<string>();
   readonly abrirCarrito = output<void>();
   readonly abrirCuenta = output<void>();
+  readonly alternarMenu = output<void>();
 
   private readonly injector = inject(Injector);
   private readonly campoBusqueda =
